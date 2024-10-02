@@ -1,7 +1,7 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 import Login from "../AuthArea/Login/Login";
-import { HomeScreen } from "../ScreensArea/HomeScreen/HomeScreen";
+import HomeScreen from "../ScreensArea/HomeScreen/HomeScreen";
 import { Statistics } from "../../components/ScreensArea/Statistics/Statistics";
 const Routing: React.FC = () => {
     return (
