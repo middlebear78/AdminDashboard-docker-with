@@ -19,19 +19,7 @@ const Login: React.FC = () => {
     // }, [user, navigate]);
 
     const handleLogin = async (email: string, password: string) => {
-        // setLoading(true);
-        // try {
-        //     const result = await signInWithEmailAndPassword(auth, email, password);
-        //     const idTokenResult = await result.user.getIdTokenResult();
-        //     const res = await createOrUpdateUser(idTokenResult.token);
-        //     // dispatch user login action here
-        //     console.log(res);
-        // } catch (error: any) {
-        //     console.error("Login failed:", error.message);
-        //     toastify.error(error.message);
-        // } finally {
-        //     setLoading(false);
-        // }
+        console.log("Email and password Login");
     };
 
     const handleGoogleLogin = () => {
