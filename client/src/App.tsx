@@ -17,13 +17,14 @@ function App() {
                 dispatch({
                     type: "USER_LOGGED_IN",
                     payload: {
-                        first_name: "ryan",
+                        email: user.email,
+                        token: idTokenResult.token,
                     },
                 });
             }
         });
         //cleanup
-        return unSubscribe();
+        return () => unSubscribe();
     }, [dispatch]);
 
     return (

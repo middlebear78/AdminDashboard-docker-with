@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-// import { useDispatch, useSelector } from "react-redux";
-// import { signInWithEmailAndPassword, GoogleAuthProvider } from "firebase/auth";
-// import { auth } from "../../../firebase";
+import { useDispatch, useSelector } from "react-redux";
+import { signInWithEmailAndPassword, signInWithPopup, FacebookAuthProvider } from "firebase/auth";
+import { auth, googleAuthProvider } from "../../../firebase";
 // import { createOrUpdateUser } from "../../../service/CurrentUserService/UserService";
 import LoginForm from "../../Forms/LoginForm";
 // import { RootState } from "../../../models/user";
@@ -10,29 +10,102 @@ import { toastify } from "../../../utils/toastify";
 
 const Login: React.FC = () => {
     const [loading, setLoading] = useState<boolean>(false);
+    const [email, setEmail] = useState<string>("");
+    const [password, setPassword] = useState<string>("");
     // const { user } = useSelector((state: RootState) => ({ ...state }));
-    // const navigate = useNavigate();
-    // const dispatch = useDispatch();
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const facebookProvider = new FacebookAuthProvider();
 
     // useEffect(() => {
     //     if (user?.token) navigate("/");
     // }, [user, navigate]);
 
     const handleLogin = async (email: string, password: string) => {
-        console.log("Email and password Login");
+        // console.table({ email, password });
+        setLoading(true);
+        try {
+            const result = await signInWithEmailAndPassword(auth, email, password);
+            console.log(result);
+            const { user } = result;
+            const idTokenResult = await user.getIdTokenResult();
+            dispatch({
+                type: "USER_LOGGED_IN",
+                payload: {
+                    email: user.email,
+                    token: idTokenResult.token,
+                },
+            });
+            navigate("/");
+            toastify.success("Welcome Admin, You are currently logged in.");
+        } catch (error: any) {
+            console.log(error);
+            toastify.error(error.message);
+        } finally {
+            setLoading(false);
+        }
     };
 
-    const handleGoogleLogin = () => {
-        // Google login logic here
-        console.log("Google login");
+    const handleGoogleLogin = async () => {
+        setLoading(true);
+        try {
+            const result = await signInWithPopup(auth, googleAuthProvider);
+            const user = result.user;
+            const idTokenResult = await user.getIdTokenResult();
+            dispatch({
+                type: "USER_LOGGED_IN",
+                payload: {
+                    email: user.email,
+                    token: idTokenResult.token,
+                },
+            });
+            navigate("/");
+            toastify.success("Welcome Admin, You are currently logged in with Google.");
+        } catch (error: any) {
+            console.log(error);
+            toastify.error(error.message || "An error has occurred while trying to log with google account.");
+        } finally {
+            setLoading(false);
+        }
     };
 
-    const handleFacebookLogin = () => {
-        // Facebook login logic here
-        console.log("Facebook login");
+    const handleFacebookLogin = async () => {
+        setLoading(true);
+        try {
+            console.log("Logging in with facebook ");
+            //     const result = await signInWithPopup(auth, facebookProvider);
+            //     const user = result.user;
+            //     const idTokenResult = await user.getIdTokenResult();
+            //     dispatch({
+            //         type: "USER_LOGGED_IN",
+            //         payload: {
+            //             email: user.email,
+            //             token: idTokenResult.token,
+            //         },
+            //     });
+            //     navigate("/");
+            //     toastify.success("Welcome Admin, You are currently logged in with Facebook.");
+        } catch (error: any) {
+            // console.log(error);
+            // toastify.error(error.message || "An error has occurred while trying to log with Facebook account.");
+        } finally {
+            setLoading(false);
+        }
     };
 
-    return <LoginForm onSubmit={handleLogin} onGoogleLogin={handleGoogleLogin} onFacebookLogin={handleFacebookLogin} />;
+    return (
+        <>
+            {loading ? (
+                <h2>Loading...</h2>
+            ) : (
+                <LoginForm
+                    onSubmit={handleLogin}
+                    onGoogleLogin={handleGoogleLogin}
+                    onFacebookLogin={handleFacebookLogin}
+                />
+            )}
+        </>
+    );
 };
 
 export default Login;

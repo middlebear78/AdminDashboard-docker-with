@@ -17,6 +17,9 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import DrawerList from "../Menu/DrawerList";
 import { useNavigate } from "react-router-dom";
+import { auth } from "../../../firebase";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../../reducers/index";
 
 const SearchIconWrapper = styled("div")(({ theme }) => ({
     padding: theme.spacing(0, 2),
@@ -33,7 +36,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     "& .MuiInputBase-input": {
         padding: theme.spacing(1, 1, 1, 0),
         paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-        // Additional styling here...
     },
 }));
 
@@ -61,7 +63,14 @@ function PrimarySearchAppBar() {
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
+    const user = useSelector((state: RootState) => state.user);
+
+    
+    
+    
+    
     const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
     };
@@ -98,7 +107,12 @@ function PrimarySearchAppBar() {
     };
 
     const handleLogoutClick = () => {
-        navigate("/logout");
+        auth.signOut();
+        dispatch({
+            type: "LOGOUT",
+            payload: null,
+        });
+        navigate("/");
     };
 
     const renderMenu = (
@@ -119,8 +133,8 @@ function PrimarySearchAppBar() {
         >
             <MenuItem onClick={handleProfileClick}>Profile</MenuItem>
             <MenuItem onClick={handleSettingsClick}>Settings</MenuItem>
-            <MenuItem onClick={handleLoginClick}>Login</MenuItem>
-            <MenuItem onClick={handleLogoutClick}>Logout</MenuItem>
+            {!user?.token && <MenuItem onClick={handleLoginClick}>Login</MenuItem>}
+            {user?.token && <MenuItem onClick={handleLogoutClick}>Logout</MenuItem>}
         </Menu>
     );
 
