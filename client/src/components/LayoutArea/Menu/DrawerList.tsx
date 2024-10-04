@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
@@ -13,9 +14,10 @@ import HomeIcon from "@mui/icons-material/Home";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import BeachAccessIcon from "@mui/icons-material/BeachAccess";
 import PeopleIcon from "@mui/icons-material/People";
-import LoginIcon from "@mui/icons-material/Login"; // Icon for Login
-import LogoutIcon from "@mui/icons-material/Logout"; // Icon for Logout
-import SettingsIcon from "@mui/icons-material/Settings"; // Icon for Settings
+import LoginIcon from "@mui/icons-material/Login";
+import LogoutIcon from "@mui/icons-material/Logout";
+import SettingsIcon from "@mui/icons-material/Settings";
+import InfoIcon from "@mui/icons-material/Info";
 
 interface DrawerListProps {
     open: boolean;
@@ -23,16 +25,23 @@ interface DrawerListProps {
 }
 
 const DrawerList: React.FC<DrawerListProps> = ({ open, toggleDrawer }) => {
+    const navigate = useNavigate();
+
+    const handleNavigation = (path: string) => {
+        navigate(path);
+        toggleDrawer(false)();
+    };
+
     const list = (
         <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
             <List>
                 {[
-                    { text: "Home", icon: <HomeIcon /> },
-                    { text: "Statistics", icon: <BarChartIcon /> },
-                    { text: "Vacations", icon: <BeachAccessIcon /> },
-                    { text: "Users", icon: <PeopleIcon /> },
-                ].map(({ text, icon }, index) => (
-                    <ListItem key={text} disablePadding>
+                    { text: "Home", path: "/", icon: <HomeIcon /> },
+                    { text: "Statistics", path: "/statistics", icon: <BarChartIcon /> },
+                    { text: "Vacations", path: "/vacations", icon: <BeachAccessIcon /> },
+                    { text: "Users", path: "/users", icon: <PeopleIcon /> },
+                ].map(({ text,path, icon }, index) => (
+                    <ListItem key={text} disablePadding onClick={() => handleNavigation(path)}>
                         <ListItemButton>
                             <ListItemIcon>{icon}</ListItemIcon>
                             <ListItemText primary={text} />
@@ -43,11 +52,12 @@ const DrawerList: React.FC<DrawerListProps> = ({ open, toggleDrawer }) => {
             <Divider />
             <List>
                 {[
-                    { text: "Login", icon: <LoginIcon /> },
-                    { text: "Logout", icon: <LogoutIcon /> },
-                    { text: "Settings", icon: <SettingsIcon /> },
-                ].map(({ text, icon }) => (
-                    <ListItem key={text} disablePadding>
+                    { text: "Login", path: "/login", icon: <LoginIcon /> },
+                    { text: "Logout", path: "/", icon: <LogoutIcon /> },
+                    { text: "About", path: "/about", icon: <InfoIcon /> },
+                    { text: "Settings", path: "/settings", icon: <SettingsIcon /> },
+                ].map(({ text, icon, path }) => (
+                    <ListItem key={text} disablePadding onClick={() => handleNavigation(path)}>
                         <ListItemButton>
                             <ListItemIcon>{icon}</ListItemIcon>
                             <ListItemText primary={text} />
