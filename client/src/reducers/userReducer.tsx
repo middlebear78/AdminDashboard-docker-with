@@ -1,11 +1,12 @@
 import { AnyAction } from "@reduxjs/toolkit";
 
 interface User {
+    id: string;  
     first_name: string;
     last_name: string;
     email: string;
-    id: string;
     token: string;
+    role: string;
 }
 
 type UserState = User | null;

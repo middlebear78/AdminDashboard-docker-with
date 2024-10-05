@@ -8,6 +8,7 @@ const createOrUpdateUser = async (authtoken: string) => {
             {
                 headers: {
                     "Content-Type": "application/json",
+                    "Authorization": `Bearer ${authtoken}`,
                 },
             }
         );

@@ -32,16 +32,24 @@ const Login: React.FC = () => {
             const idTokenResult = await user.getIdTokenResult();
 
             createOrUpdateUser(idTokenResult.token)
-                .then((res) => console.log("Create or update res", res))
+                .then((res) => {
+                    // console.log(res);
+                    const { user_id, first_name, last_name, email, role } = res.user_info;
+
+                    dispatch({
+                        type: "USER_LOGGED_IN",
+                        payload: {
+                            user_id,
+                            first_name,
+                            last_name,
+                            email: user.email, //  Firebase user email
+                            role: role === 2 ? "Admin" : "User",
+                            token: idTokenResult.token, //fireBase token
+                        },
+                    });
+                })
                 .catch((error) => console.log("Error:", error.message));
 
-            dispatch({
-                type: "USER_LOGGED_IN",
-                payload: {
-                    email: user.email,
-                    token: idTokenResult.token,
-                },
-            });
             navigate("/");
             toastify.success("Welcome Admin, You are currently logged in.");
         } catch (error: any) {

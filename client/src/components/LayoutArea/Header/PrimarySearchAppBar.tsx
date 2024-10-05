@@ -1,6 +1,7 @@
 import * as React from "react";
 import { styled, alpha } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
@@ -20,6 +21,11 @@ import { useNavigate } from "react-router-dom";
 import { auth } from "../../../firebase";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../reducers/index";
+import { capitalizeFirstLetter } from "../../../utils/tools";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle"; // Profile icon
+import SettingsIcon from "@mui/icons-material/Settings"; // Settings icon
+import LoginIcon from "@mui/icons-material/Login"; // Login icon
+import LogoutIcon from "@mui/icons-material/Logout"; // Logout icon
 
 const SearchIconWrapper = styled("div")(({ theme }) => ({
     padding: theme.spacing(0, 2),
@@ -67,10 +73,6 @@ function PrimarySearchAppBar() {
 
     const user = useSelector((state: RootState) => state.user);
 
-    
-    
-    
-    
     const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
     };
@@ -131,10 +133,24 @@ function PrimarySearchAppBar() {
             open={isMenuOpen}
             onClose={handleMenuClose}
         >
-            <MenuItem onClick={handleProfileClick}>Profile</MenuItem>
-            <MenuItem onClick={handleSettingsClick}>Settings</MenuItem>
-            {!user?.token && <MenuItem onClick={handleLoginClick}>Login</MenuItem>}
-            {user?.token && <MenuItem onClick={handleLogoutClick}>Logout</MenuItem>}
+            <MenuItem onClick={handleProfileClick}>
+                {" "}
+                <AccountCircleIcon sx={{ mr: 1, color: "grey" }} /> Profile
+            </MenuItem>
+            <MenuItem onClick={handleSettingsClick}>
+                <SettingsIcon sx={{ mr: 1, color: "grey" }} /> Settings
+            </MenuItem>
+            {!user?.token && (
+                <MenuItem onClick={handleLoginClick}>
+                    <LoginIcon sx={{ mr: 1, color: "grey" }} /> Login
+                </MenuItem>
+            )}
+            {user?.token && (
+                <MenuItem onClick={handleLogoutClick}>
+                    {" "}
+                    <LogoutIcon sx={{ mr: 1, color: "grey" }} /> Logout
+                </MenuItem>
+            )}
         </Menu>
     );
 
@@ -230,7 +246,11 @@ function PrimarySearchAppBar() {
                             component="div"
                             sx={{ display: { xs: "none", sm: "block" }, pt: 1 }}
                         >
-                            US
+                            {user?.token ? (
+                                `${capitalizeFirstLetter(user.first_name)} ${capitalizeFirstLetter(user.last_name)}`
+                            ) : (
+                                <>{"Login here"}</>
+                            )}
                         </Typography>
                         <IconButton
                             size="large"
