@@ -18,6 +18,9 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import InfoIcon from "@mui/icons-material/Info";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../../reducers/index";
+import { toastify } from "../../../utils/toastify";
+import { Auth } from "firebase/auth";
+import { auth } from "../../../firebase";
 
 interface DrawerListProps {
     open: boolean;
@@ -36,8 +39,13 @@ const DrawerList: React.FC<DrawerListProps> = ({ open, toggleDrawer }) => {
     };
 
     const handleLogout = () => {
-        // Dispatch your logout action here
-        // Example: dispatch(logout());
+        auth.signOut();
+        dispatch({
+            type: "LOGOUT",
+            payload: null,
+        });
+
+        toastify.info("You are currently logged out.");
         navigate("/"); // Redirect to home or login after logout
         toggleDrawer(false)();
     };

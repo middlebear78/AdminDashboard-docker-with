@@ -5,7 +5,7 @@ import { signInWithEmailAndPassword, signInWithPopup, FacebookAuthProvider } fro
 import { auth, googleAuthProvider } from "../../../firebase";
 // import { createOrUpdateUser } from "../../../service/CurrentUserService/UserService";
 import LoginForm from "../../Forms/LoginForm";
-// import { RootState } from "../../../models/user";
+import { RootState } from "../../../reducers/index";
 import { toastify } from "../../../utils/toastify";
 
 const Login: React.FC = () => {
@@ -16,13 +16,14 @@ const Login: React.FC = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const facebookProvider = new FacebookAuthProvider();
+    const user = useSelector((state: RootState) => state.user);
 
-    // useEffect(() => {
-    //     if (user?.token) navigate("/");
-    // }, [user, navigate]);
+    useEffect(() => {
+        if (user?.token) navigate("/");
+    }, [user, navigate]);
 
     const handleLogin = async (email: string, password: string) => {
-        // console.table({ email, password });
+        
         setLoading(true);
         try {
             const result = await signInWithEmailAndPassword(auth, email, password);
