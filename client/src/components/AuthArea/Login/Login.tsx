@@ -3,16 +3,17 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { signInWithEmailAndPassword, signInWithPopup, FacebookAuthProvider } from "firebase/auth";
 import { auth, googleAuthProvider } from "../../../firebase";
-// import { createOrUpdateUser } from "../../../service/CurrentUserService/UserService";
+import createOrUpdateUser from "../../../service/authService";
 import LoginForm from "../../Forms/LoginForm";
 import { RootState } from "../../../reducers/index";
 import { toastify } from "../../../utils/toastify";
+import axios from "axios";
+import { error } from "console";
 
 const Login: React.FC = () => {
     const [loading, setLoading] = useState<boolean>(false);
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
-    // const { user } = useSelector((state: RootState) => ({ ...state }));
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const facebookProvider = new FacebookAuthProvider();
@@ -23,13 +24,17 @@ const Login: React.FC = () => {
     }, [user, navigate]);
 
     const handleLogin = async (email: string, password: string) => {
-        
         setLoading(true);
         try {
             const result = await signInWithEmailAndPassword(auth, email, password);
             console.log(result);
             const { user } = result;
             const idTokenResult = await user.getIdTokenResult();
+
+            createOrUpdateUser(idTokenResult.token)
+                .then((res) => console.log("Create or update res", res))
+                .catch((error) => console.log("Error:", error.message));
+
             dispatch({
                 type: "USER_LOGGED_IN",
                 payload: {
@@ -53,6 +58,11 @@ const Login: React.FC = () => {
             const result = await signInWithPopup(auth, googleAuthProvider);
             const user = result.user;
             const idTokenResult = await user.getIdTokenResult();
+
+            createOrUpdateUser(idTokenResult.token)
+                .then((res) => console.log("Create or update res", res))
+                .catch((error) => console.log("Error:", error.message));
+
             dispatch({
                 type: "USER_LOGGED_IN",
                 payload: {

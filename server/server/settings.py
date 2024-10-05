@@ -12,6 +12,13 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 import os
+import firebase_admin
+from firebase_admin import credentials
+from corsheaders.defaults import default_headers
+
+
+cred = credentials.Certificate("./config/fbServiceAccountKey.json")
+firebase_admin.initialize_app(cred)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -139,4 +146,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
+]
+CORS_ALLOW_HEADERS = list(default_headers) + [
+    'token',
+    # add any other custom headers you might need
 ]
