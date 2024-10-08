@@ -40,3 +40,31 @@ def verify_firebase_token(request):
             return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
 
     return JsonResponse({'status': 'error', 'message': 'Invalid request'}, status=400)
+
+
+@csrf_exempt
+def check_admin(request):
+    if request.method == 'POST':
+        try:
+            body = json.loads(request.body)
+            token = body.get('token')
+            if not token:
+                return JsonResponse({'status': 'error', 'message': 'Token is required'}, status=400)
+
+            # Verify the Firebase ID token
+            decoded_token = auth.verify_id_token(token)
+            email = decoded_token.get('email')
+
+            try:
+                user = User.objects.get(email=email)
+                if user.role_id == 'admin':
+                    return JsonResponse({'status': 'success', 'is_admin': True}, status=200)
+                else:
+                    return JsonResponse({'status': 'success', 'is_admin': False}, status=200)
+            except User.DoesNotExist:
+                return JsonResponse({'status': 'error', 'message': 'User not found'}, status=404)
+
+        except Exception as e:
+            return JsonResponse({'status': 'error', 'message': str(e)}, status=400)
+
+    return JsonResponse({'status': 'error', 'message': 'Invalid request'}, status=400)

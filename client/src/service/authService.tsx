@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const createOrUpdateUser = async (authtoken: string) => {
+export const createOrUpdateUser = async (authtoken: string) => {
     try {
         const response = await axios.post(
             "http://localhost:8000/verify_firebase_token/",
@@ -8,7 +8,7 @@ const createOrUpdateUser = async (authtoken: string) => {
             {
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization": `Bearer ${authtoken}`,
+                    Authorization: `Bearer ${authtoken}`,
                 },
             }
         );
@@ -26,3 +26,27 @@ const createOrUpdateUser = async (authtoken: string) => {
 };
 
 export default createOrUpdateUser;
+
+export const currentAdmin = async (authtoken: string) => {
+    try {
+        const response = await axios.post(
+            "http://localhost:8000/check_admin/",
+            {},
+            {
+                headers: {
+                    Authorization: `Bearer ${authtoken}`,
+                },
+            }
+        );
+
+        return response.data;
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            console.error("Error response:", error.response?.data);
+            throw new Error(error.response?.data?.message || "An error occurred");
+        } else {
+            console.error("Unexpected error:", error);
+            throw new Error("An unexpected error occurred");
+        }
+    }
+};

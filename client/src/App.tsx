@@ -6,6 +6,7 @@ import { Layout } from "./components/LayoutArea/Layout/Layout";
 import { auth } from "./firebase";
 import { useDispatch } from "react-redux";
 
+
 function App() {
     const dispatch = useDispatch();
 
@@ -25,7 +26,7 @@ function App() {
         });
         //cleanup
         return () => unSubscribe();
-    }, [dispatch]);
+    }, [dispatch, auth]);
 
     return (
         <div className="App">
