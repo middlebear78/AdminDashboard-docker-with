@@ -1,13 +1,25 @@
+from .models import User
 from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+
 from .models import User, Role
 
 
-@admin.register(User)
-class UserAdmin(admin.ModelAdmin):
-    list_display = ('user_id', 'first_name', 'last_name',
-                    'email', 'role', 'firebase_uid')
-    search_fields = ('first_name', 'last_name', 'email')
-    list_filter = ('role',)
+class UserAdmin(BaseUserAdmin):
+    list_display = ('username', 'first_name', 'last_name',
+                    'email', 'firebase_uid', 'is_active', 'is_staff', "role")
+
+    fieldsets = BaseUserAdmin.fieldsets + (
+        (None, {'fields': ('role',)}),
+    )
+
+    # Also add the role field to the add user form
+    add_fieldsets = BaseUserAdmin.add_fieldsets + (
+        (None, {'fields': ('role',)}),
+    )
+
+
+admin.site.register(User, UserAdmin)
 
 
 @admin.register(Role)

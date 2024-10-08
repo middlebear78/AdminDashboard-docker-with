@@ -153,3 +153,4 @@ CORS_ALLOW_HEADERS = list(default_headers) + [
     'token',
     # add any other custom headers you might need
 ]
+AUTH_USER_MODEL = 'users.User'

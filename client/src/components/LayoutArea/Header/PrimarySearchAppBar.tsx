@@ -246,11 +246,7 @@ function PrimarySearchAppBar() {
                             component="div"
                             sx={{ display: { xs: "none", sm: "block" }, pt: 1 }}
                         >
-                            {user?.token ? (
-                                `${capitalizeFirstLetter(user.first_name)} ${capitalizeFirstLetter(user.last_name)}`
-                            ) : (
-                                <>{"Login here"}</>
-                            )}
+                            {user?.token ? `${user.email && user.email.split("@")[0]}` : <>{"Login here"}</>}
                         </Typography>
                         <IconButton
                             size="large"

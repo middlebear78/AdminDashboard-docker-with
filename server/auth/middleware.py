@@ -17,13 +17,13 @@ class FirebaseAuthMiddleware:
         #     print("Public path accessed; skipping Firebase authentication.")
         #     return self.get_response(request)
 
-        # Get the token from the Authorization header
+       
         auth_header = request.META.get('HTTP_AUTHORIZATION')
         print("Authorization header:", auth_header)
 
         if auth_header:
             try:
-                # Token is expected to be in the format: "Bearer <token>"
+               
                 if auth_header.startswith('Bearer '):
                     token = auth_header.split(' ')[1]
                     print("Extracted token:", token)
@@ -31,7 +31,7 @@ class FirebaseAuthMiddleware:
                     print("Invalid authorization header format")
                     return JsonResponse({'status': 'error', 'message': 'Invalid authorization header format'}, status=401)
 
-                # Verify the token with Firebase
+              
                 decoded_token = auth.verify_id_token(token)
                 print("Decoded token:", decoded_token)
 
@@ -71,7 +71,7 @@ class AdminCheckMiddleware:
                 print("User not found for UID:", request.user_uid)
                 return JsonResponse({'status': 'error', 'message': 'User not found'}, status=404)
 
-            # Print the user role for debugging
+            
             print(f"User Role: {user.role}")
 
             if not self.is_user_admin(user):
@@ -100,7 +100,7 @@ class AdminCheckMiddleware:
 
     def is_user_admin(self, user) -> bool:
         print(f"Checking if user role is admin: {user.role}")
-        if user.role == 2:
+        if user.role_id == 2:
             print("User is Admin!")
             return True
         else:
