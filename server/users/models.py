@@ -17,11 +17,14 @@ class User(models.Model):
     user_id = models.AutoField(primary_key=True)
     first_name = models.CharField(max_length=45, blank=True, null=True)
     last_name = models.CharField(max_length=45, blank=True, null=True)
-    email = models.EmailField(
-        max_length=45, blank=True, null=True, unique=True)
+    email = models.EmailField(max_length=45, blank=True, null=True, unique=True)
     password = models.CharField(max_length=512, blank=True, null=True)
     role = models.ForeignKey(Role, on_delete=models.SET_NULL, null=True)
+    firebase_uid = models.CharField(max_length=255, unique=True, blank=True, null=True)  # New field
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'users'
+
+    def __str__(self):
+        return f"{self.first_name} {self.last_name} - {self.role or 'No Role'}"

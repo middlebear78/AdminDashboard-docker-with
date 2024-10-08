@@ -4,7 +4,8 @@ from .models import User, Role
 
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
-    list_display = ('user_id', 'first_name', 'last_name', 'email', 'role')
+    list_display = ('user_id', 'first_name', 'last_name',
+                    'email', 'role', 'firebase_uid')
     search_fields = ('first_name', 'last_name', 'email')
     list_filter = ('role',)
 
