@@ -5,6 +5,9 @@ import { VacationsStatistics } from "../../../service/statisticsService";
 import { useEffect, useState } from "react";
 import { Box, Typography } from "@mui/material";
 
+import { BarChart } from "@mui/x-charts/BarChart";
+import { PieChart } from "@mui/x-charts/PieChart";
+
 interface VacationStatistics {
     past_due: {
         count: number;
@@ -34,15 +37,11 @@ const columns: Column[] = [
     {
         id: "start_date",
         label: "Start Date",
-        // minWidth: 0,
-        // align: "left",
         format: (value: string) => new Date(value).toLocaleDateString("en-US"),
     },
     {
         id: "end_date",
         label: "End Date",
-        // minWidth: 0,
-        // align: "left",
         format: (value: string) => new Date(value).toLocaleDateString("en-US"),
     },
 ];
@@ -59,9 +58,7 @@ export function Statistics(): JSX.Element {
 
     const getVacationsStatistics = async (): Promise<void> => {
         try {
-            console.log("Fetching Vacations Statistics");
             const response = await VacationsStatistics();
-            console.log("Vacations Statistics fetched:", response.data);
             setVacationStatistics(response.data);
         } catch (err) {
             console.log("Error fetching Statistics", err);
@@ -77,9 +74,23 @@ export function Statistics(): JSX.Element {
         }));
     };
 
-    // const getVacationsLikes(){
-    //     //
-    // }
+    // Calculate totals for ElementHighlights (for the PieChart or other visualization)
+    const calculateVacationPercentages = (): { [key: string]: number } => {
+        if (!vacationsStatistics) return { past_due: 0, ongoing: 0, future: 0 };
+
+        const totalVacations =
+            vacationsStatistics.past_due.count + vacationsStatistics.ongoing.count + vacationsStatistics.future.count;
+
+        if (totalVacations === 0) return { past_due: 0, ongoing: 0, future: 0 };
+
+        return {
+            past_due: (vacationsStatistics.past_due.count / totalVacations) * 100,
+            ongoing: (vacationsStatistics.ongoing.count / totalVacations) * 100,
+            future: (vacationsStatistics.future.count / totalVacations) * 100,
+        };
+    };
+
+    const vacationPercentages = calculateVacationPercentages();
 
     useEffect(() => {
         getVacationsStatistics();
@@ -125,12 +136,36 @@ export function Statistics(): JSX.Element {
                     />
                 </div>
             </div>
-            <Box sx={{ display: "flex", alignItems: "center", width: "100%", my: 4 }}>
+            <div className={css.chartsStatistics}>
+                <div className={css.chartsContainer}>
+                    <PieChart
+                        series={[
+                            {
+                                data: [
+                                    { id: 0, value: 10, label: "series A" },
+                                    { id: 1, value: 15, label: "series B" },
+                                    { id: 2, value: 20, label: "series C" },
+                                ],
+                            },
+                        ]}
+                        width={400}
+                        height={200}
+                    />
+                </div>
+                <div className={css.chartsContainer}>
+                    <BarChart
+                        xAxis={[{ scaleType: "band", data: ["group A", "group B", "group C"] }]}
+                        series={[{ data: [4, 3, 5] }, { data: [1, 6, 3] }, { data: [2, 5, 6] }]}
+                        width={500}
+                        height={300}
+                    />
+                </div>
+            </div>
+            <Box sx={{ display: "flex", alignItems: "center", width: "100%", my: 2 }}>
                 <Box sx={{ flexGrow: 1, height: "1px", bgcolor: "gray" }} />
-                <Typography sx={{ mx: 2, whiteSpace: "nowrap" }}>LIKES STATS</Typography>
+                <Typography sx={{ mx: 2, whiteSpace: "nowrap" }}>LIKE STATS</Typography>
                 <Box sx={{ flexGrow: 1, height: "1px", bgcolor: "gray" }} />
             </Box>
-            <div className={css.Statistics}></div>
         </>
     );
 }

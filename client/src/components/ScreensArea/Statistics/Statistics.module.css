@@ -9,3 +9,24 @@
     width: 30%; /* Set the width to half */
     margin: 0 auto; /* Center the table */
 }
+.chartsStatistics {
+    padding-top: 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.chartsContainer {
+    width: 50%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    /* border: 1px solid white;
+    border-radius: 5px;
+    padding: 50px;
+    margin: 50px;
+    box-shadow: 1px 1px 3px gray; */
+}
