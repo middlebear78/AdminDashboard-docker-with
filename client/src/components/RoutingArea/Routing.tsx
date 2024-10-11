@@ -9,6 +9,10 @@ import { Settings } from "../ScreensArea/Settings/Settings";
 import { About } from "../ScreensArea/About/About";
 import AdminPrivateRoute from "../RoutingArea/AdminPrivateRoute";
 
+interface RoutingProps {
+    toggleTheme: () => void;
+}
+
 const Routing: React.FC = () => {
     return (
         <div className="Routing">

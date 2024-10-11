@@ -87,12 +87,12 @@ const DrawerList: React.FC<DrawerListProps> = ({ open, toggleDrawer }) => {
 
     return (
         <Drawer open={open} onClose={toggleDrawer(false)}>
-            {user?.token ? (
+            {user?.token && user.role === "Admin" ? (
                 list
             ) : (
                 <Box sx={{ padding: 2 }}>
                     <ListItem>
-                        <ListItemText primary="Please log in to access this section." />
+                        <ListItemText primary="Please log in as ADMIN to access this section." />
                     </ListItem>
                 </Box>
             )}

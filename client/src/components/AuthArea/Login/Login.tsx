@@ -7,8 +7,6 @@ import createOrUpdateUser from "../../../service/authService";
 import LoginForm from "../../Forms/LoginForm";
 import { RootState } from "../../../reducers/index";
 import { toastify } from "../../../utils/toastify";
-import axios from "axios";
-import { error } from "console";
 
 const Login: React.FC = () => {
     const [loading, setLoading] = useState<boolean>(false);
@@ -28,30 +26,26 @@ const Login: React.FC = () => {
         try {
             const result = await signInWithEmailAndPassword(auth, email, password);
             console.log(result);
-            const { user } = result;
+            const user = result.user;
             const idTokenResult = await user.getIdTokenResult();
 
-            createOrUpdateUser(idTokenResult.token)
-                .then((res) => {
-                    // console.log(res);
-                    const { user_id, first_name, last_name, email, role } = res.user_info;
+            const res = await createOrUpdateUser(idTokenResult.token);
+            const { user_id, first_name, last_name, email: userEmail, role } = res.user_info;
 
-                    dispatch({
-                        type: "USER_LOGGED_IN",
-                        payload: {
-                            user_id,
-                            first_name,
-                            last_name,
-                            email: user.email, //  Firebase user email
-                            role: role === 2 ? "Admin" : "User",
-                            token: idTokenResult.token, //fireBase token
-                        },
-                    });
-                })
-                .catch((error) => console.log("Error:", error.message));
+            dispatch({
+                type: "USER_LOGGED_IN",
+                payload: {
+                    user_id,
+                    first_name,
+                    last_name,
+                    email: userEmail, // Firebase user email
+                    role: role === 2 ? "Admin" : "User",
+                    token: idTokenResult.token, // Firebase token
+                },
+            });
 
             navigate("/");
-            toastify.success("Welcome Admin, You are currently logged in.");
+            toastify.success(`Welcome ${role === 2 ? "Admin" : "User"}, You are currently logged in.`);
         } catch (error: any) {
             console.log(error);
             toastify.error(error.message);
@@ -67,56 +61,59 @@ const Login: React.FC = () => {
             const user = result.user;
             const idTokenResult = await user.getIdTokenResult();
 
-            createOrUpdateUser(idTokenResult.token)
-                .then((res) => {
-                    // console.log(res);
-                    const { user_id, first_name, last_name, email, role } = res.user_info;
+            const res = await createOrUpdateUser(idTokenResult.token);
+            const { user_id, first_name, last_name, email: userEmail, role } = res.user_info;
 
-                    dispatch({
-                        type: "USER_LOGGED_IN",
-                        payload: {
-                            user_id,
-                            first_name,
-                            last_name,
-                            email: user.email, //  Firebase user email
-                            role: role === 2 ? "Admin" : "User",
-                            token: idTokenResult.token, //fireBase token
-                        },
-                    });
-                })
-                .catch((error) => console.log("Error:", error.message));
+            dispatch({
+                type: "USER_LOGGED_IN",
+                payload: {
+                    user_id,
+                    first_name,
+                    last_name,
+                    email: userEmail, // Firebase user email
+                    role: role === 2 ? "Admin" : "User",
+                    token: idTokenResult.token, // Firebase token
+                },
+            });
+
             navigate("/");
-            toastify.success("Welcome Admin, You are currently logged in with Google.");
+            toastify.success(`Welcome ${role === 2 ? "Admin" : "User"}, You are currently logged in.`);
         } catch (error: any) {
             console.log(error);
-            toastify.error(error.message || "An error has occurred while trying to log with google account.");
+            toastify.error(error.message || "An error has occurred while trying to log in with Google.");
         } finally {
             setLoading(false);
         }
     };
 
     const handleFacebookLogin = async () => {
-        setLoading(true);
-        try {
-            console.log("Logging in with facebook ");
-            //     const result = await signInWithPopup(auth, facebookProvider);
-            //     const user = result.user;
-            //     const idTokenResult = await user.getIdTokenResult();
-            //     dispatch({
-            //         type: "USER_LOGGED_IN",
-            //         payload: {
-            //             email: user.email,
-            //             token: idTokenResult.token,
-            //         },
-            //     });
-            //     navigate("/");
-            //     toastify.success("Welcome Admin, You are currently logged in with Facebook.");
-        } catch (error: any) {
-            // console.log(error);
-            // toastify.error(error.message || "An error has occurred while trying to log with Facebook account.");
-        } finally {
-            setLoading(false);
-        }
+        // setLoading(true);
+        // try {
+        //     console.log("Logging in with Facebook");
+        //     const result = await signInWithPopup(auth, facebookProvider);
+        //     const user = result.user;
+        //     const idTokenResult = await user.getIdTokenResult();
+        //     const res = await createOrUpdateUser(idTokenResult.token);
+        //     const { user_id, first_name, last_name, email: userEmail, role } = res.user_info;
+        //     dispatch({
+        //         type: "USER_LOGGED_IN",
+        //         payload: {
+        //             user_id,
+        //             first_name,
+        //             last_name,
+        //             email: userEmail,
+        //             role: role === 2 ? "Admin" : "User",
+        //             token: idTokenResult.token,
+        //         },
+        //     });
+        //     navigate("/");
+        //     toastify.success("Welcome Admin, You are currently logged in with Facebook.");
+        // } catch (error: any) {
+        //     console.log(error);
+        //     toastify.error(error.message || "An error has occurred while trying to log in with Facebook.");
+        // } finally {
+        //     setLoading(false);
+        // }
     };
 
     return (

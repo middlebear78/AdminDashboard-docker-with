@@ -27,7 +27,7 @@ def verify_firebase_token(request):
                 email = decoded_token.get('email')
                 user = User.objects.get(email=email)
                 user_info = {
-                    'user_id': user.user_id,
+                    'user_id': user.id,
                     'email': user.email,
                     'first_name': user.first_name,
                     'last_name': user.last_name,
