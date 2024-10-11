@@ -31,10 +31,10 @@ export const currentAdmin = async (authtoken: string) => {
     try {
         const response = await axios.post(
             "http://localhost:8000/check_admin/",
-            {},
+            { token: authtoken }, // Send token in the body
             {
                 headers: {
-                    Authorization: `Bearer ${authtoken}`,
+                    Authorization: `Bearer ${authtoken}`, // Optional: Still include this if your middleware needs it
                 },
             }
         );

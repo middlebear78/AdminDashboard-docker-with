@@ -58,7 +58,7 @@ class AdminCheckMiddleware:
     def __call__(self, request):
         print("AdminCheckMiddleware called")
 
-        # Adjust this condition to skip checking for admin privileges for certain paths
+        # Adjust to skip checking for admin privileges for certain paths
         if request.path_info.startswith('/admin/') or request.path_info.startswith('/public/'):
             print("Public path accessed; skipping admin check.")
             return self.get_response(request)
@@ -67,15 +67,16 @@ class AdminCheckMiddleware:
         if hasattr(request, 'user_uid'):
             print(f"User UID found in request: {request.user_uid}")
             user = self.get_user_from_uid(request.user_uid)
-            if user is None:
-                print("User not found for UID:", request.user_uid)
+
+            if not user:
+                print(f"User not found for UID: {request.user_uid}")
                 return JsonResponse({'status': 'error', 'message': 'User not found'}, status=404)
 
-            
-            print(f"User Role: {user.role}")
+            print(f"User Role ID: {user.role_id}")
 
+            # Check if the user is an admin
             if not self.is_user_admin(user):
-                print("Access denied for user UID:", request.user_uid)
+                print(f"Access denied for user UID: {request.user_uid} (Role ID: {user.role_id})")
                 return JsonResponse({'status': 'error', 'message': 'Access denied. Admins only.'}, status=403)
             else:
                 print("Access granted; user is an admin.")
@@ -87,11 +88,13 @@ class AdminCheckMiddleware:
         return self.get_response(request)
 
     def get_user_from_uid(self, uid: str):
-        # Fetch the user from your database using the UID
+        """
+        Fetch the user from the database using the Firebase UID.
+        """
         User = get_user_model()
         try:
             print(f"Fetching user for UID: {uid}")
-            user = User.objects.get(firebase_uid=uid)
+            user = User.objects.get(firebase_uid=uid)  # Make sure 'firebase_uid' is the correct field
             print(f"User found: {user}")
             return user
         except User.DoesNotExist:
@@ -99,8 +102,12 @@ class AdminCheckMiddleware:
             return None
 
     def is_user_admin(self, user) -> bool:
-        print(f"Checking if user role is admin: {user.role}")
-        if user.role_id == 2:
+        """
+        Check if the user's role corresponds to admin.
+        Assuming role_id 2 corresponds to 'admin'.
+        """
+        print(f"Checking if user role is admin (Role ID: {user.role_id})")
+        if user.role_id == 2:  # Ensure this value corresponds to 'admin'
             print("User is Admin!")
             return True
         else:
