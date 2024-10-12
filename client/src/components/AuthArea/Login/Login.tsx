@@ -25,11 +25,18 @@ const Login: React.FC = () => {
         setLoading(true);
         try {
             const result = await signInWithEmailAndPassword(auth, email, password);
-            console.log(result);
+            console.log(result); // Log the Firebase sign-in result
             const user = result.user;
             const idTokenResult = await user.getIdTokenResult();
 
             const res = await createOrUpdateUser(idTokenResult.token);
+            if (!res || !res.user_info) {
+                toastify.error("Failed to retrieve user information. Please try again.");
+                return; // Exit early to prevent further execution
+            }
+
+            console.log("User Info:", res.user_info); // Log the user_info specifically
+
             const { user_id, first_name, last_name, email: userEmail, role } = res.user_info;
 
             dispatch({

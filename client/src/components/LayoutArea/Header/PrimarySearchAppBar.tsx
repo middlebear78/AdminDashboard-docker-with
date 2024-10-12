@@ -26,6 +26,7 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle"; // Profile ic
 import SettingsIcon from "@mui/icons-material/Settings"; // Settings icon
 import LoginIcon from "@mui/icons-material/Login"; // Login icon
 import LogoutIcon from "@mui/icons-material/Logout"; // Logout icon
+import { toastify } from "../../../utils/toastify";
 
 const SearchIconWrapper = styled("div")(({ theme }) => ({
     padding: theme.spacing(0, 2),
@@ -114,6 +115,7 @@ function PrimarySearchAppBar() {
             type: "LOGOUT",
             payload: null,
         });
+        toastify.info("You are Logged Out.")
         navigate("/");
     };
 
@@ -140,20 +142,11 @@ function PrimarySearchAppBar() {
             <MenuItem onClick={handleSettingsClick}>
                 <SettingsIcon sx={{ mr: 1, color: "grey" }} /> Settings
             </MenuItem>
-
-            {!user?.token && (
-                <MenuItem onClick={handleLoginClick}>
-                    <LoginIcon sx={{ mr: 1, color: "grey" }} /> Login
-                </MenuItem>
-            )}
-
-            {user?.token && user.role === "Admin" && (
+            {user?.role === "Admin" ? (
                 <MenuItem onClick={handleLogoutClick}>
-                    <LogoutIcon sx={{ mr: 1, color: "grey" }} /> Logout
+                    <LoginIcon sx={{ mr: 1, color: "grey" }} /> Logout
                 </MenuItem>
-            )}
-
-            {user?.token && user.role !== "Admin" && (
+            ) : (
                 <MenuItem onClick={handleLoginClick}>
                     <LoginIcon sx={{ mr: 1, color: "grey" }} /> Login
                 </MenuItem>
