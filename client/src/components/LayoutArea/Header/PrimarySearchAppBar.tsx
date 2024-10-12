@@ -137,20 +137,21 @@ function PrimarySearchAppBar() {
                 {" "}
                 <AccountCircleIcon sx={{ mr: 1, color: "grey" }} /> Profile
             </MenuItem>
+            
             <MenuItem onClick={handleSettingsClick}>
                 <SettingsIcon sx={{ mr: 1, color: "grey" }} /> Settings
             </MenuItem>
-            {!user?.token && (
-                <MenuItem onClick={handleLoginClick}>
-                    <LoginIcon sx={{ mr: 1, color: "grey" }} /> Login
-                </MenuItem>
-            )}
-            {user?.token && (
+            
+            {user?.token && user.role === "Admin" ? (
                 <MenuItem onClick={handleLogoutClick}>
                     {" "}
                     <LogoutIcon sx={{ mr: 1, color: "grey" }} /> Logout
                 </MenuItem>
-            )}
+            ) : (
+                <MenuItem onClick={handleLoginClick}>
+                    <LoginIcon sx={{ mr: 1, color: "grey" }} /> Login
+                </MenuItem>
+            )}{" "}
         </Menu>
     );
 
@@ -246,7 +247,11 @@ function PrimarySearchAppBar() {
                             component="div"
                             sx={{ display: { xs: "none", sm: "block" }, pt: 1 }}
                         >
-                            {user?.token && user.role ==="Admin" ? `${user.email && user.email.split("@")[0]}` : <>{"Login here"}</>}
+                            {user?.token && user.role === "Admin" ? (
+                                `${user.email && user.email.split("@")[0]}`
+                            ) : (
+                                <>{"Login here"}</>
+                            )}
                         </Typography>
                         <IconButton
                             size="large"
