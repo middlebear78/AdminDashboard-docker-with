@@ -137,21 +137,27 @@ function PrimarySearchAppBar() {
                 {" "}
                 <AccountCircleIcon sx={{ mr: 1, color: "grey" }} /> Profile
             </MenuItem>
-            
             <MenuItem onClick={handleSettingsClick}>
                 <SettingsIcon sx={{ mr: 1, color: "grey" }} /> Settings
             </MenuItem>
-            
-            {user?.token && user.role === "Admin" ? (
-                <MenuItem onClick={handleLogoutClick}>
-                    {" "}
-                    <LogoutIcon sx={{ mr: 1, color: "grey" }} /> Logout
-                </MenuItem>
-            ) : (
+
+            {!user?.token && (
                 <MenuItem onClick={handleLoginClick}>
                     <LoginIcon sx={{ mr: 1, color: "grey" }} /> Login
                 </MenuItem>
-            )}{" "}
+            )}
+
+            {user?.token && user.role === "Admin" && (
+                <MenuItem onClick={handleLogoutClick}>
+                    <LogoutIcon sx={{ mr: 1, color: "grey" }} /> Logout
+                </MenuItem>
+            )}
+
+            {user?.token && user.role !== "Admin" && (
+                <MenuItem onClick={handleLoginClick}>
+                    <LoginIcon sx={{ mr: 1, color: "grey" }} /> Login
+                </MenuItem>
+            )}
         </Menu>
     );
 
