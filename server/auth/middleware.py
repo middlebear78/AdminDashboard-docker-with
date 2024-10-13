@@ -13,9 +13,10 @@ class FirebaseAuthMiddleware:
         print("FirebaseAuthMiddleware called")
 
         # Skip authentication for the admin page, login, and other public paths
-        # if request.path_info.startswith('/admin/') or request.path_info in ['/verify_firebase_token/', '/login/', '/signup/']:
-        #     print("Public path accessed; skipping Firebase authentication.")
-        #     return self.get_response(request)
+        if request.path_info.startswith('/admin/') or request.path_info in ['/verify_firebase_token/', '/login/', '/signup/', '/api/statistics/users']:
+            print("Public path accessed; skipping Firebase authentication.")
+            return self.get_response(request)
+        
 
        
         auth_header = request.META.get('HTTP_AUTHORIZATION')
