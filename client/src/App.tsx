@@ -18,6 +18,38 @@ function App() {
     const theme = createTheme({
         palette: {
             mode: isDarkMode ? "dark" : "light",
+            primary: {
+                main: isDarkMode ? "#90caf9" : "#1976d2", // Primary color
+            },
+            secondary: {
+                main: isDarkMode ? "#f48fb1" : "#dc004e", // Secondary color
+            },
+            background: {
+                default: isDarkMode ? "#121212" : "#ffffff", // Background color
+                paper: isDarkMode ? "#1e1e1e" : "#f5f5f5", // Paper color
+            },
+            text: {
+                primary: isDarkMode ? "#ffffff" : "#000000", // Primary text color
+                secondary: isDarkMode ? "#e0e0e0" : "#555555", // Secondary text color
+            },
+        },
+        typography: {
+            fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+            h1: {
+                fontSize: "2rem",
+                fontWeight: 700,
+                color: isDarkMode ? "#ffffff" : "#333333", // Customize h1 color
+            },
+            h2: {
+                fontSize: "1.5rem",
+                fontWeight: 600,
+                color: isDarkMode ? "#ffffff" : "#333333", // Customize h2 color
+            },
+            body1: {
+                fontSize: "1rem",
+                color: isDarkMode ? "#ffffff" : "#333333", // Customize body text color
+            },
+            // Add more typography styles as needed
         },
     });
 

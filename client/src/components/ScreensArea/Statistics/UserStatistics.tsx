@@ -53,7 +53,7 @@ interface Row {
     end_date: number;
 }
 
-export function Statistics(): JSX.Element {
+export function UserStatistics(): JSX.Element {
     const [vacationsStatistics, setVacationStatistics] = useState<VacationStatistics | null>(null);
 
     const getVacationsStatistics = async (): Promise<void> => {
@@ -74,7 +74,6 @@ export function Statistics(): JSX.Element {
         }));
     };
 
-    // Calculate totals for ElementHighlights (for the PieChart or other visualization)
     const calculateVacationPercentages = (): { [key: string]: number } => {
         if (!vacationsStatistics) return { past_due: 0, ongoing: 0, future: 0 };
 
@@ -100,7 +99,7 @@ export function Statistics(): JSX.Element {
         <>
             <Box sx={{ display: "flex", alignItems: "center", width: "100%", my: 4 }}>
                 <Box sx={{ flexGrow: 1, height: "1px", bgcolor: "gray" }} />
-                <Typography sx={{ mx: 2, whiteSpace: "nowrap" }}>VACATIONS STATS</Typography>
+                <Typography sx={{ mx: 2, whiteSpace: "nowrap" }}>USER STATS</Typography>
                 <Box sx={{ flexGrow: 1, height: "1px", bgcolor: "gray" }} />
             </Box>
 
@@ -161,7 +160,6 @@ export function Statistics(): JSX.Element {
                     />
                 </div>
             </div>
-            
         </>
     );
 }

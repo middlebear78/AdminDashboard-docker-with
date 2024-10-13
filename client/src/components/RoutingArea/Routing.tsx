@@ -8,6 +8,8 @@ import { Users } from "../ScreensArea/Users/Users";
 import { Settings } from "../ScreensArea/Settings/Settings";
 import { About } from "../ScreensArea/About/About";
 import AdminPrivateRoute from "../RoutingArea/AdminPrivateRoute";
+import { LikeStatistics } from "../ScreensArea/Statistics/LikeStatistics";
+import { UserStatistics } from "../ScreensArea/Statistics/UserStatistics";
 
 interface RoutingProps {
     toggleTheme: () => void;
@@ -20,8 +22,9 @@ const Routing: React.FC = () => {
                 <Route path="/" element={<HomeScreen />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/statistics" element={<AdminPrivateRoute element={<Statistics />} />} />
+                <Route path="/likes" element={<AdminPrivateRoute element={<LikeStatistics />} />} />
                 <Route path="/vacations" element={<Vacations />} />
-                <Route path="/users" element={<Users />} />
+                <Route path="/users" element={<AdminPrivateRoute element={<UserStatistics />} />} />
                 <Route path="/settings" element={<AdminPrivateRoute element={<Settings />} />} />
                 <Route path="/about" element={<About />} />
             </Routes>

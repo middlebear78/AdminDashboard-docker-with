@@ -8,18 +8,17 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
+import Typography from "@mui/material/Typography"; // Import Typography
 import HomeIcon from "@mui/icons-material/Home";
-import BarChartIcon from "@mui/icons-material/BarChart";
 import BeachAccessIcon from "@mui/icons-material/BeachAccess";
 import PeopleIcon from "@mui/icons-material/People";
-import LoginIcon from "@mui/icons-material/Login";
+import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import LogoutIcon from "@mui/icons-material/Logout";
-import SettingsIcon from "@mui/icons-material/Settings";
 import InfoIcon from "@mui/icons-material/Info";
+import SettingsIcon from "@mui/icons-material/Settings";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../../../reducers/index";
 import { toastify } from "../../../utils/toastify";
-import { Auth } from "firebase/auth";
 import { auth } from "../../../firebase";
 
 interface DrawerListProps {
@@ -27,10 +26,17 @@ interface DrawerListProps {
     toggleDrawer: (open: boolean) => () => void;
 }
 
+interface ListItemType {
+    text: string;
+    path?: string;
+    icon?: React.ReactNode;
+    isHeader?: boolean;
+    action?: () => void;
+}
+
 const DrawerList: React.FC<DrawerListProps> = ({ open, toggleDrawer }) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-
     const user = useSelector((state: RootState) => state.user);
 
     const handleNavigation = (path: string) => {
@@ -39,47 +45,88 @@ const DrawerList: React.FC<DrawerListProps> = ({ open, toggleDrawer }) => {
     };
 
     const handleLogout = () => {
-        auth.signOut();
-        dispatch({
-            type: "LOGOUT",
-            payload: null,
-        });
-
-        toastify.info("You are currently logged out.");
-        navigate("/"); // Redirect to home or login after logout
+        auth.signOut()
+            .then(() => {
+                dispatch({ type: "LOGOUT", payload: null });
+                toastify.info("You are now logged out.");
+                navigate("/");
+            })
+            .catch((error) => {
+                toastify.error("Logout failed: " + error.message);
+            });
         toggleDrawer(false)();
     };
 
+    const listItems: ListItemType[] = [
+        { text: "Home", path: "/", icon: <HomeIcon /> },
+        { text: "Statistics", icon: null, isHeader: true },
+        { text: "Vacations", path: "/statistics", icon: <BeachAccessIcon /> },
+        { text: "Users", path: "/users", icon: <PeopleIcon /> },
+        { text: "Likes", path: "/likes", icon: <ThumbUpIcon /> },
+    ];
+
+    const actionItems: ListItemType[] = [
+        { text: "Admin", icon: null, isHeader: true },
+        { text: "Logout", icon: <LogoutIcon />, action: handleLogout },
+        { text: "About", path: "/about", icon: <InfoIcon /> },
+        { text: "Settings", path: "/settings", icon: <SettingsIcon /> },
+    ];
+
     const list = (
-        <Box sx={{ width: 250 }} role="presentation" onClick={toggleDrawer(false)}>
+        <Box sx={{ width: 250 }} role="presentation">
             <List>
-                {[
-                    { text: "Home", path: "/", icon: <HomeIcon /> },
-                    { text: "Statistics", path: "/statistics", icon: <BarChartIcon /> },
-                    { text: "Vacations", path: "/vacations", icon: <BeachAccessIcon /> },
-                    { text: "Users", path: "/users", icon: <PeopleIcon /> },
-                ].map(({ text, path, icon }) => (
-                    <ListItem key={text} disablePadding onClick={() => handleNavigation(path)}>
-                        <ListItemButton>
-                            <ListItemIcon>{icon}</ListItemIcon>
-                            <ListItemText primary={text} />
-                        </ListItemButton>
-                    </ListItem>
+                {listItems.map(({ text, path, icon, isHeader }) => (
+                    <React.Fragment key={text}>
+                        {isHeader ? (
+                            <ListItem sx={{ padding: "10px" }}>
+                                <Typography
+                                    variant="h6"
+                                    sx={{
+                                        fontWeight: "bold",
+                                        color: "primary.main",
+                                    }}
+                                >
+                                    {text}
+                                    <Divider />
+                                </Typography>
+                            </ListItem>
+                        ) : (
+                            <ListItem disablePadding onClick={() => path && handleNavigation(path)}>
+                                <ListItemButton>
+                                    <ListItemIcon>{icon}</ListItemIcon>
+                                    <ListItemText primary={text} />
+                                </ListItemButton>
+                            </ListItem>
+                        )}
+                    </React.Fragment>
                 ))}
             </List>
             <Divider />
             <List>
-                {[
-                    { text: "Logout", path: "/", icon: <LogoutIcon />, action: handleLogout },
-                    { text: "About", path: "/about", icon: <InfoIcon /> },
-                    { text: "Settings", path: "/settings", icon: <SettingsIcon /> },
-                ].map(({ text, icon, path, action }) => (
-                    <ListItem key={text} disablePadding onClick={action ? action : () => handleNavigation(path)}>
-                        <ListItemButton>
-                            <ListItemIcon>{icon}</ListItemIcon>
-                            <ListItemText primary={text} />
-                        </ListItemButton>
-                    </ListItem>
+                {actionItems.map(({ text, icon, path, action, isHeader }) => (
+                    <React.Fragment key={text}>
+                        {isHeader ? (
+                            <ListItem sx={{ padding: "10px" }}>
+                                <Typography
+                                    variant="h6"
+                                    sx={{
+                                        fontWeight: "bold",
+                                        color: "primary.main",
+                                    }}
+                                >
+                                    {text}
+                                    <Divider />
+                                </Typography>
+                            </ListItem>
+                        ) : (
+                            <ListItem disablePadding onClick={action ? action : () => path && handleNavigation(path)}>
+                                <ListItemButton>
+                                    <ListItemIcon>{icon}</ListItemIcon>
+                                    <ListItemText primary={text} />
+                                </ListItemButton>
+                            </ListItem>
+                        )}
+                    </React.Fragment>
                 ))}
             </List>
         </Box>

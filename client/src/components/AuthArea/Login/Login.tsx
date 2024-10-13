@@ -17,9 +17,9 @@ const Login: React.FC = () => {
     const facebookProvider = new FacebookAuthProvider();
     const user = useSelector((state: RootState) => state.user);
 
-    useEffect(() => {
-        if (user?.token) navigate("/");
-    }, [user, navigate]);
+    // useEffect(() => {
+    //     if (user?.token) navigate("/");
+    // }, [user, navigate]);
 
     const handleLogin = async (email: string, password: string) => {
         setLoading(true);
