@@ -59,81 +59,58 @@ const DrawerList: React.FC<DrawerListProps> = ({ open, toggleDrawer }) => {
 
     const listItems: ListItemType[] = [
         { text: "Home", path: "/", icon: <HomeIcon /> },
-        { text: "Statistics", icon: null, isHeader: true },
-        { text: "Vacations", path: "/statistics", icon: <BeachAccessIcon /> },
+        { text: "Statistics", isHeader: true },
+        {
+            text: "Vacations",
+            path: "/statistics",
+            icon: <BeachAccessIcon />,
+        },
         { text: "Users", path: "/users", icon: <PeopleIcon /> },
         { text: "Likes", path: "/likes", icon: <ThumbUpIcon /> },
     ];
 
     const actionItems: ListItemType[] = [
-        { text: "Admin", icon: null, isHeader: true },
+        { text: "Admin", isHeader: true },
         { text: "Logout", icon: <LogoutIcon />, action: handleLogout },
         { text: "About", path: "/about", icon: <InfoIcon /> },
         { text: "Settings", path: "/settings", icon: <SettingsIcon /> },
     ];
 
+    const renderListItems = (items: ListItemType[]) => {
+        return items.map(({ text, path, icon, isHeader, action }) => (
+            <React.Fragment key={text}>
+                {isHeader ? (
+                    <ListItem sx={{ padding: "10px" }}>
+                        <Typography variant="h6" sx={{ fontWeight: "bold", color: "primary.main" }}>
+                            {text}
+                        </Typography>
+                        <Divider />
+                    </ListItem>
+                ) : (
+                    <ListItem disablePadding onClick={action ? action : () => path && handleNavigation(path)}>
+                        <ListItemButton>
+                            <ListItemIcon>{icon}</ListItemIcon>
+                            <ListItemText
+                                primary={text}
+                                sx={{ fontWeight: "bold", color: "#000000" }} // Apply styles here
+                            />
+                        </ListItemButton>
+                    </ListItem>
+                )}
+            </React.Fragment>
+        ));
+    };
+
     const list = (
         <Box sx={{ width: 250 }} role="presentation">
-            <List>
-                {listItems.map(({ text, path, icon, isHeader }) => (
-                    <React.Fragment key={text}>
-                        {isHeader ? (
-                            <ListItem sx={{ padding: "10px" }}>
-                                <Typography
-                                    variant="h6"
-                                    sx={{
-                                        fontWeight: "bold",
-                                        color: "primary.main",
-                                    }}
-                                >
-                                    {text}
-                                    <Divider />
-                                </Typography>
-                            </ListItem>
-                        ) : (
-                            <ListItem disablePadding onClick={() => path && handleNavigation(path)}>
-                                <ListItemButton>
-                                    <ListItemIcon>{icon}</ListItemIcon>
-                                    <ListItemText primary={text} />
-                                </ListItemButton>
-                            </ListItem>
-                        )}
-                    </React.Fragment>
-                ))}
-            </List>
+            <List>{renderListItems(listItems)}</List>
             <Divider />
-            <List>
-                {actionItems.map(({ text, icon, path, action, isHeader }) => (
-                    <React.Fragment key={text}>
-                        {isHeader ? (
-                            <ListItem sx={{ padding: "10px" }}>
-                                <Typography
-                                    variant="h6"
-                                    sx={{
-                                        fontWeight: "bold",
-                                        color: "primary.main",
-                                    }}
-                                >
-                                    {text}
-                                    <Divider />
-                                </Typography>
-                            </ListItem>
-                        ) : (
-                            <ListItem disablePadding onClick={action ? action : () => path && handleNavigation(path)}>
-                                <ListItemButton>
-                                    <ListItemIcon>{icon}</ListItemIcon>
-                                    <ListItemText primary={text} />
-                                </ListItemButton>
-                            </ListItem>
-                        )}
-                    </React.Fragment>
-                ))}
-            </List>
+            <List>{renderListItems(actionItems)}</List>
         </Box>
     );
 
     return (
-        <Drawer open={open} onClose={toggleDrawer(false)}>
+        <Drawer open={open} onClose={toggleDrawer(false)} sx={{ "& .MuiDrawer-paper": { backgroundColor: "#f0f0f0" } }}>
             {user?.token && user.role === "Admin" ? (
                 list
             ) : (

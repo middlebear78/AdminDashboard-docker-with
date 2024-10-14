@@ -1,26 +1,16 @@
 import css from "./Statistics.module.css";
 import ReusableTable from "../../Tools/ReusableTable";
 import InfoCard from "../../Tools/InfoCard";
-import { VacationsStatistics } from "../../../service/statisticsService";
+import { UsersStatistics } from "../../../service/statisticsService";
 import { useEffect, useState } from "react";
 import { Box, Typography } from "@mui/material";
 
 import { BarChart } from "@mui/x-charts/BarChart";
 import { PieChart } from "@mui/x-charts/PieChart";
 
-interface VacationStatistics {
-    past_due: {
-        count: number;
-        vacations: any[];
-    };
-    ongoing: {
-        count: number;
-        vacations: any[];
-    };
-    future: {
-        count: number;
-        vacations: any[];
-    };
+interface UserStatistics {
+    count: number;
+    users: any[];
 }
 
 interface Column {
@@ -32,67 +22,49 @@ interface Column {
 }
 
 const columns: Column[] = [
-    { id: "name", label: "Name", minWidth: 0 },
-    { id: "country", label: "Country", minWidth: 0 },
+    { id: "first_name", label: "First Name", minWidth: 0 },
+    { id: "last_name", label: "Last Name", minWidth: 0 },
     {
-        id: "start_date",
-        label: "Start Date",
-        format: (value: string) => new Date(value).toLocaleDateString("en-US"),
+        id: "email",
+        label: "email",
     },
     {
-        id: "end_date",
-        label: "End Date",
-        format: (value: string) => new Date(value).toLocaleDateString("en-US"),
+        id: "role_name",
+        label: "Role",
     },
 ];
 
 interface Row {
-    name: string;
-    country: string;
-    start_date: number;
-    end_date: number;
+    first_name: string;
+    last_name: string;
+    email: string;
+    role_name: string;
 }
 
 export function UserStatistics(): JSX.Element {
-    const [vacationsStatistics, setVacationStatistics] = useState<VacationStatistics | null>(null);
+    const [userStatistics, setUserStatistics] = useState<UserStatistics | null>(null);
 
-    const getVacationsStatistics = async (): Promise<void> => {
+    const getUsersStatistics = async (): Promise<void> => {
         try {
-            const response = await VacationsStatistics();
-            setVacationStatistics(response.data);
+            const response = await UsersStatistics();
+            setUserStatistics(response.data);
+            console.log(userStatistics);
         } catch (err) {
             console.log("Error fetching Statistics", err);
         }
     };
 
-    const getRowsFromVacations = (vacations: any[]): Row[] => {
-        return vacations.map((vacation) => ({
-            name: vacation.vacation_name,
-            country: vacation.country.country_name,
-            start_date: vacation.start_date,
-            end_date: vacation.end_date,
+    const getRowsFromUsers = (users: any[]): Row[] => {
+        return users.map((user) => ({
+            first_name: user.first_name,
+            last_name: user.last_name,
+            email: user.email,
+            role_name: user.role.role_name,
         }));
     };
 
-    const calculateVacationPercentages = (): { [key: string]: number } => {
-        if (!vacationsStatistics) return { past_due: 0, ongoing: 0, future: 0 };
-
-        const totalVacations =
-            vacationsStatistics.past_due.count + vacationsStatistics.ongoing.count + vacationsStatistics.future.count;
-
-        if (totalVacations === 0) return { past_due: 0, ongoing: 0, future: 0 };
-
-        return {
-            past_due: (vacationsStatistics.past_due.count / totalVacations) * 100,
-            ongoing: (vacationsStatistics.ongoing.count / totalVacations) * 100,
-            future: (vacationsStatistics.future.count / totalVacations) * 100,
-        };
-    };
-
-    const vacationPercentages = calculateVacationPercentages();
-
     useEffect(() => {
-        getVacationsStatistics();
+        getUsersStatistics();
     }, []);
 
     return (
@@ -106,32 +78,12 @@ export function UserStatistics(): JSX.Element {
             <div className={css.Statistics}>
                 <div className={css.tableContainer}>
                     <InfoCard
-                        head="Past-Due Vacations:"
-                        body={vacationsStatistics ? vacationsStatistics.past_due.count.toString() : "Loading..."}
+                        head="Number Of Active Users:"
+                        body={userStatistics ? userStatistics.count.toString() : "Loading..."}
                     />
                     <ReusableTable
                         columns={columns}
-                        rows={vacationsStatistics ? getRowsFromVacations(vacationsStatistics.past_due.vacations) : []}
-                    />
-                </div>
-                <div className={css.tableContainer}>
-                    <InfoCard
-                        head="On-Going Vacations:"
-                        body={vacationsStatistics ? vacationsStatistics.ongoing.count.toString() : "Loading..."}
-                    />
-                    <ReusableTable
-                        columns={columns}
-                        rows={vacationsStatistics ? getRowsFromVacations(vacationsStatistics.ongoing.vacations) : []}
-                    />
-                </div>
-                <div className={css.tableContainer}>
-                    <InfoCard
-                        head="Future Vacations:"
-                        body={vacationsStatistics ? vacationsStatistics.future.count.toString() : "Loading..."}
-                    />
-                    <ReusableTable
-                        columns={columns}
-                        rows={vacationsStatistics ? getRowsFromVacations(vacationsStatistics.future.vacations) : []}
+                        rows={userStatistics ? getRowsFromUsers(userStatistics.users) : []}
                     />
                 </div>
             </div>

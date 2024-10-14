@@ -62,8 +62,8 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    # "auth.middleware.FirebaseAuthMiddleware",
-    # "auth.middleware.AdminCheckMiddleware"
+    "auth.middleware.FirebaseAuthMiddleware",
+    "auth.middleware.AdminCheckMiddleware"
 ]
 
 ROOT_URLCONF = "server.urls"

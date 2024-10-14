@@ -83,4 +83,4 @@ class LikesStatistics(APIView):
                 continue
 
         return {
-            "likes_by country": data}
+            "likes_by_country": data}
