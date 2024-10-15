@@ -16,16 +16,17 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
+import HomeIcon from "@mui/icons-material/Home"; // Added HomeIcon import
 import DrawerList from "../Menu/DrawerList";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom"; // Added Link from react-router-dom
 import { auth } from "../../../firebase";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../reducers/index";
 import { capitalizeFirstLetter } from "../../../utils/tools";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle"; // Profile icon
-import SettingsIcon from "@mui/icons-material/Settings"; // Settings icon
-import LoginIcon from "@mui/icons-material/Login"; // Login icon
-import LogoutIcon from "@mui/icons-material/Logout"; // Logout icon
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import SettingsIcon from "@mui/icons-material/Settings";
+import LoginIcon from "@mui/icons-material/Login";
+import LogoutIcon from "@mui/icons-material/Logout";
 import { toastify } from "../../../utils/toastify";
 
 const SearchIconWrapper = styled("div")(({ theme }) => ({
@@ -64,7 +65,7 @@ const Search = styled("div")(({ theme }) => ({
 function PrimarySearchAppBar() {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState<null | HTMLElement>(null);
-    const [drawerOpen, setDrawerOpen] = React.useState(false); // State for drawer
+    const [drawerOpen, setDrawerOpen] = React.useState(false);
 
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -92,7 +93,7 @@ function PrimarySearchAppBar() {
     };
 
     const toggleDrawer = (open: boolean) => () => {
-        setDrawerOpen(open); // Set drawer state
+        setDrawerOpen(open);
     };
 
     const menuId = "primary-search-account-menu";
@@ -115,7 +116,7 @@ function PrimarySearchAppBar() {
             type: "LOGOUT",
             payload: null,
         });
-        toastify.info("You are Logged Out.")
+        toastify.info("You are Logged Out.");
         navigate("/");
     };
 
@@ -136,7 +137,6 @@ function PrimarySearchAppBar() {
             onClose={handleMenuClose}
         >
             <MenuItem onClick={handleProfileClick}>
-                {" "}
                 <AccountCircleIcon sx={{ mr: 1, color: "grey" }} /> Profile
             </MenuItem>
             <MenuItem onClick={handleSettingsClick}>
@@ -180,14 +180,14 @@ function PrimarySearchAppBar() {
                 <p>Messages</p>
             </MenuItem>
 
-            <MenuItem>
+            {/* <MenuItem>
                 <IconButton size="large" aria-label="show 17 new notifications" color="inherit">
                     <Badge badgeContent={17} color="error">
                         <NotificationsIcon />
                     </Badge>
                 </IconButton>
                 <p>Notifications</p>
-            </MenuItem>
+            </MenuItem> */}
 
             <MenuItem onClick={handleProfileMenuOpen}>
                 <IconButton
@@ -206,7 +206,7 @@ function PrimarySearchAppBar() {
 
     return (
         <Box sx={{ flexGrow: 1 }}>
-            <AppBar position="fixed">
+            <AppBar position="fixed" sx={{ background: "linear-gradient(to right,#0d47a1, #1e88e5)" }}>
                 <Toolbar>
                     <IconButton
                         size="large"
@@ -218,28 +218,48 @@ function PrimarySearchAppBar() {
                     >
                         <MenuIcon />
                     </IconButton>
-                    <Typography variant="h6" noWrap component="div" sx={{ display: { xs: "none", sm: "block" } }}>
-                        Admin's Kingdom
+
+                    <IconButton component={Link} to="/" size="large" color="inherit" sx={{ mr: 2 }}>
+                        <HomeIcon />
+                    </IconButton>
+
+                    <Typography
+                        variant="h6"
+                        noWrap
+                        component={Link}
+                        to="/"
+                        sx={{
+                            background: "linear-gradient(90deg, rgba(50, 205, 50, 0.8), rgba(50, 205, 50, 0.5))", // Green gradient
+                            WebkitBackgroundClip: "text",
+
+                            fontWeight: "400",
+                            fontSize: "2rem",
+                            fontFamily: "'Kaushan Script', cursive",
+                            textShadow: "2px 2px 4px rgba(255, 255, 255, 0.7)",
+                            letterSpacing: "0.5px",
+                            textDecoration: "none",
+                            transition: "0.3s",
+                            transform: "translateY(-5px)",
+                        }}
+                    >
+                        Admin's{" "}
+                        <span
+                            style={{
+                                color: "#FFD700",
+                                fontSize: "2.5rem",
+                                textShadow: "2px 2px 5px rgba(0, 0, 0, 0.5)",
+                                background: "none",
+                                borderRadius: "0",
+                                padding: "0",
+                            }}
+                        >
+                            K
+                        </span>
+                        ingDom
                     </Typography>
-                    {/* <Search>
-                        <SearchIconWrapper>
-                            <SearchIcon />
-                        </SearchIconWrapper>
-                        <StyledInputBase placeholder="Search…" inputProps={{ "aria-label": "search" }} />
-                    </Search> */}
+
                     <Box sx={{ flexGrow: 1 }} />
                     <Box sx={{ display: { xs: "none", md: "flex" } }}>
-                        {/* <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-                            <Badge badgeContent={4} color="error">
-                                <MailIcon />
-                            </Badge>
-                        </IconButton>
-                        <IconButton size="large" aria-label="show 17 new notifications" color="inherit">
-                            <Badge badgeContent={17} color="error">
-                                <NotificationsIcon />
-                            </Badge>
-                        </IconButton> */}
-
                         <Typography
                             variant="h6"
                             noWrap
@@ -280,7 +300,7 @@ function PrimarySearchAppBar() {
             </AppBar>
             {renderMobileMenu}
             {renderMenu}
-            <DrawerList open={drawerOpen} toggleDrawer={toggleDrawer} /> {/* Pass the drawer props here */}
+            <DrawerList open={drawerOpen} toggleDrawer={toggleDrawer} />
         </Box>
     );
 }
