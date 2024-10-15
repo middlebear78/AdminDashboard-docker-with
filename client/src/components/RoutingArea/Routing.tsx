@@ -10,6 +10,7 @@ import { About } from "../ScreensArea/About/About";
 import AdminPrivateRoute from "../RoutingArea/AdminPrivateRoute";
 import { LikeStatistics } from "../ScreensArea/Statistics/LikeStatistics";
 import { UserStatistics } from "../ScreensArea/Statistics/UserStatistics";
+import NotFound from "../ScreensArea/ErrorsScreen/404NotfoundScreen";
 
 interface RoutingProps {
     toggleTheme: () => void;
@@ -27,6 +28,7 @@ const Routing: React.FC = () => {
                 <Route path="/users" element={<AdminPrivateRoute element={<UserStatistics />} />} />
                 <Route path="/settings" element={<AdminPrivateRoute element={<Settings />} />} />
                 <Route path="/about" element={<About />} />
+                <Route path="*" element={<NotFound />} />
             </Routes>
         </div>
     );
