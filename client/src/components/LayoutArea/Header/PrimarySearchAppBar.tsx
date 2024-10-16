@@ -74,6 +74,14 @@ function PrimarySearchAppBar() {
     const dispatch = useDispatch();
 
     const user = useSelector((state: RootState) => state.user);
+    const localUserString = localStorage.getItem("user");
+    const localUser = localUserString ? JSON.parse(localUserString) : null;
+    if (localUser) {
+        console.log(localUser);
+        console.log(localUser.role);
+    } else {
+        console.log("no user in the local storage");
+    }
 
     const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
@@ -152,7 +160,7 @@ function PrimarySearchAppBar() {
             <MenuItem onClick={handleSettingsClick}>
                 <SettingsIcon sx={{ mr: 1, color: "grey" }} /> Settings
             </MenuItem>
-            {user?.role === "Admin" ? (
+            {localUser?.role === "Admin" ? (
                 <MenuItem onClick={handleLogoutClick}>
                     <LoginIcon sx={{ mr: 1, color: "grey" }} /> Logout
                 </MenuItem>
@@ -276,7 +284,7 @@ function PrimarySearchAppBar() {
                             component="div"
                             sx={{ display: { xs: "none", sm: "block" }, pt: 1 }}
                         >
-                            {user?.token && user.role === "Admin" ? (
+                            {user?.token && localUser?.role === "Admin" ? (
                                 `${user.email && user.email.split("@")[0]}`
                             ) : (
                                 <>{"Login here"}</>

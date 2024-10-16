@@ -39,6 +39,9 @@ const DrawerList: React.FC<DrawerListProps> = ({ open, toggleDrawer }) => {
     const dispatch = useDispatch();
     const user = useSelector((state: RootState) => state.user);
 
+    const localUserString = localStorage.getItem("user");
+    const localUser = localUserString ? JSON.parse(localUserString) : null;
+
     const handleNavigation = (path: string) => {
         navigate(path);
         toggleDrawer(false)();
@@ -111,7 +114,7 @@ const DrawerList: React.FC<DrawerListProps> = ({ open, toggleDrawer }) => {
 
     return (
         <Drawer open={open} onClose={toggleDrawer(false)} sx={{ "& .MuiDrawer-paper": { backgroundColor: "#f0f0f0" } }}>
-            {user?.token && user.role === "Admin" ? (
+            {user?.token && localUser?.role === "Admin" ? (
                 list
             ) : (
                 <Box sx={{ padding: 2 }}>
