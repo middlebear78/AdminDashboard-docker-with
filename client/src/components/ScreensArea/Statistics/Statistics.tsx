@@ -4,8 +4,8 @@ import InfoCard from "../../Tools/InfoCard";
 import { VacationsStatistics } from "../../../service/statisticsService";
 import { useEffect, useState } from "react";
 import { Box, Typography } from "@mui/material";
-
-import { BarChart } from "@mui/x-charts/BarChart";
+// @ts-ignore
+import { Cell, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
 import { PieChart } from "@mui/x-charts/PieChart";
 
 interface VacationStatistics {
@@ -96,6 +96,19 @@ export function Statistics(): JSX.Element {
         getVacationsStatistics();
     }, []);
 
+    // Color mapping for both charts
+    const colors = {
+        past_due: "red",
+        ongoing: "green",
+        future: "blue",
+    };
+
+    const vacationData = [
+        { name: "Past Due", count: vacationsStatistics?.past_due.count || 0, color: colors.past_due },
+        { name: "Ongoing", count: vacationsStatistics?.ongoing.count || 0, color: colors.ongoing },
+        { name: "Future", count: vacationsStatistics?.future.count || 0, color: colors.future },
+    ];
+
     return (
         <>
             <Box sx={{ display: "flex", alignItems: "center", width: "100%", my: 4 }}>
@@ -142,9 +155,19 @@ export function Statistics(): JSX.Element {
                         series={[
                             {
                                 data: [
-                                    { id: 0, value: 10, label: "series A" },
-                                    { id: 1, value: 15, label: "series B" },
-                                    { id: 2, value: 20, label: "series C" },
+                                    {
+                                        id: 0,
+                                        value: vacationPercentages.past_due,
+                                        label: "Past Due",
+                                        color: colors.past_due,
+                                    },
+                                    {
+                                        id: 1,
+                                        value: vacationPercentages.ongoing,
+                                        label: "Ongoing",
+                                        color: colors.ongoing,
+                                    },
+                                    { id: 2, value: vacationPercentages.future, label: "Future", color: colors.future },
                                 ],
                             },
                         ]}
@@ -153,15 +176,30 @@ export function Statistics(): JSX.Element {
                     />
                 </div>
                 <div className={css.chartsContainer}>
-                    <BarChart
-                        xAxis={[{ scaleType: "band", data: ["group A", "group B", "group C"] }]}
-                        series={[{ data: [4, 3, 5] }, { data: [1, 6, 3] }, { data: [2, 5, 6] }]}
-                        width={500}
-                        height={300}
-                    />
+                    <ResponsiveContainer width="70%" height={300}>
+                        <BarChart
+                            data={vacationData}
+                            margin={{
+                                top: 20,
+                                right: 30,
+                                left: 20,
+                                bottom: 5,
+                            }}
+                        >
+                            <CartesianGrid strokeDasharray="3 3" />
+                            <XAxis dataKey="name" />
+                            <YAxis />
+                            <Tooltip />
+                            <Legend />
+                            <Bar dataKey="count" barSize={50}>
+                                {vacationData.map((entry, index) => (
+                                    <Cell key={`cell-${index}`} fill={entry.color} />
+                                ))}
+                            </Bar>
+                        </BarChart>
+                    </ResponsiveContainer>
                 </div>
             </div>
-            
         </>
     );
 }

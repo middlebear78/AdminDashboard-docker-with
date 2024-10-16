@@ -14,48 +14,10 @@ import { RootState } from "./store";
 function App() {
     const dispatch = useDispatch();
 
-    const isDarkMode = useSelector((state: RootState) => state.theme.isDarkMode);
-    const theme = createTheme({
-        palette: {
-            mode: isDarkMode ? "dark" : "light",
-            primary: {
-                main: isDarkMode ? "#90caf9" : "#1976d2", // Primary color
-            },
-            secondary: {
-                main: isDarkMode ? "#f48fb1" : "#dc004e", // Secondary color
-            },
-            background: {
-                default: isDarkMode ? "#121212" : "#ffffff", // Background color
-                paper: isDarkMode ? "#1e1e1e" : "#f5f5f5", // Paper color
-            },
-            text: {
-                primary: isDarkMode ? "#ffffff" : "#000000", // Primary text color
-                secondary: isDarkMode ? "#e0e0e0" : "#555555", // Secondary text color
-            },
-        },
-        typography: {
-            fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
-            h1: {
-                fontSize: "2rem",
-                fontWeight: 700,
-                color: isDarkMode ? "#ffffff" : "#333333", // Customize h1 color
-            },
-            h2: {
-                fontSize: "1.5rem",
-                fontWeight: 600,
-                color: isDarkMode ? "#ffffff" : "#333333", // Customize h2 color
-            },
-            body1: {
-                fontSize: "1rem",
-                color: isDarkMode ? "#ffffff" : "#333333", // Customize body text color
-            },
-            // Add more typography styles as needed
-        },
-    });
-
     useEffect(() => {
         const unSubscribe = auth.onAuthStateChanged(async (user) => {
             if (user) {
+                // User is signed in, get the token and dispatch the login action
                 const idTokenResult = await user.getIdTokenResult();
                 console.log("user:", user);
                 dispatch({
@@ -65,31 +27,34 @@ function App() {
                         token: idTokenResult.token,
                     },
                 });
+            } else {
+            
+                dispatch({
+                    type: "LOGOUT",
+                });
             }
         });
-        // Cleanup subscription
+
+        // Cleanup subscription when component unmounts
         return () => unSubscribe();
     }, [dispatch]);
 
     return (
-        <ThemeProvider theme={theme}>
-            <CssBaseline />
-            <div className="App">
-                <ToastContainer
-                    position="top-center"
-                    autoClose={3000}
-                    hideProgressBar={false}
-                    newestOnTop={false}
-                    closeOnClick
-                    rtl={false}
-                    pauseOnFocusLoss
-                    draggable
-                    pauseOnHover
-                />
+        <div className="App">
+            <ToastContainer
+                position="top-center"
+                autoClose={3000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+            />
 
-                <Layout />
-            </div>
-        </ThemeProvider>
+            <Layout />
+        </div>
     );
 }
 
