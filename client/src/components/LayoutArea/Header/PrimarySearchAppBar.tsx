@@ -111,13 +111,23 @@ function PrimarySearchAppBar() {
     };
 
     const handleLogoutClick = () => {
-        auth.signOut();
-        dispatch({
-            type: "LOGOUT",
-            payload: null,
-        });
-        toastify.info("You are Logged Out.");
-        navigate("/");
+        auth.signOut()
+            .then(() => {
+                localStorage.removeItem("user");
+
+                dispatch({
+                    type: "LOGOUT",
+                    payload: null,
+                });
+
+                toastify.info("You are Logged Out.");
+
+                navigate("/");
+            })
+            .catch((error) => {
+                console.error("Logout error:", error);
+                toastify.error("Error logging out. Please try again.");
+            });
     };
 
     const renderMenu = (

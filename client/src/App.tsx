@@ -28,7 +28,6 @@ function App() {
                     },
                 });
             } else {
-            
                 dispatch({
                     type: "LOGOUT",
                 });
@@ -37,6 +36,18 @@ function App() {
 
         // Cleanup subscription when component unmounts
         return () => unSubscribe();
+    }, [dispatch]);
+
+    useEffect(() => {
+        const userDataString = localStorage.getItem("user"); // Get the user data as a string
+        if (userDataString) {
+            // Check if it's not null
+            const userData = JSON.parse(userDataString); // Now parse it safely
+            dispatch({
+                type: "USER_LOGGED_IN",
+                payload: userData,
+            });
+        }
     }, [dispatch]);
 
     return (
