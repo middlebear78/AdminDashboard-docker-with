@@ -1,0 +1,54 @@
+.Statistics {
+    padding-top: 20px;
+    display: flex;
+    flex-direction: row; /* Ensures each section stacks vertically */
+    /* align-items: center; Center aligns the sections */
+}
+
+.tableContainer {
+    width: 30%; /* Set the width to half */
+    margin: 0 auto; /* Center the table */
+}
+.chartsStatistics {
+    padding-top: 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.chartsContainer {
+    width: 50%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    /* border: 1px solid white;
+    border-radius: 5px;
+    padding: 50px;
+    margin: 50px;
+    box-shadow: 1px 1px 3px gray; */
+}
+.likechartsStatistics {
+    padding-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-right: 50px;
+}
+
+.likechartsContainer {
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid white;
+    border-radius: 5px;
+    padding: 50px;
+    margin: 50px;
+    box-shadow: 1px 1px 3px gray;
+}

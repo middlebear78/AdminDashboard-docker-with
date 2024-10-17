@@ -62,6 +62,7 @@ const DrawerList: React.FC<DrawerListProps> = ({ open, toggleDrawer }) => {
 
     const listItems: ListItemType[] = [
         { text: "Home", path: "/", icon: <HomeIcon /> },
+
         { text: "Statistics", isHeader: true },
         {
             text: "Vacations",
@@ -74,13 +75,14 @@ const DrawerList: React.FC<DrawerListProps> = ({ open, toggleDrawer }) => {
 
     const actionItems: ListItemType[] = [
         { text: "Admin", isHeader: true },
-        { text: "Logout", icon: <LogoutIcon />, action: handleLogout },
+
         { text: "About", path: "/about", icon: <InfoIcon /> },
         { text: "Settings", path: "/settings", icon: <SettingsIcon /> },
+        { text: "Logout", icon: <LogoutIcon />, action: handleLogout },
     ];
 
     const renderListItems = (items: ListItemType[]) => {
-        return items.map(({ text, path, icon, isHeader, action }) => (
+        return items.map(({ text, path, icon, isHeader, action }, index) => (
             <React.Fragment key={text}>
                 {isHeader ? (
                     <ListItem sx={{ padding: "10px" }}>
@@ -90,15 +92,19 @@ const DrawerList: React.FC<DrawerListProps> = ({ open, toggleDrawer }) => {
                         <Divider />
                     </ListItem>
                 ) : (
-                    <ListItem disablePadding onClick={action ? action : () => path && handleNavigation(path)}>
-                        <ListItemButton>
-                            <ListItemIcon>{icon}</ListItemIcon>
-                            <ListItemText
-                                primary={text}
-                                sx={{ fontWeight: "bold", color: "#000000" }} // Apply styles here
-                            />
-                        </ListItemButton>
-                    </ListItem>
+                    <>
+                        <ListItem disablePadding onClick={action ? action : () => path && handleNavigation(path)}>
+                            <ListItemButton>
+                                <ListItemIcon>{icon}</ListItemIcon>
+                                <ListItemText
+                                    primary={text}
+                                    sx={{ fontWeight: "bold", color: "#000000" }} // Apply styles here
+                                />
+                            </ListItemButton>
+                        </ListItem>
+
+                        {text === "Home" && <Divider />}
+                    </>
                 )}
             </React.Fragment>
         ));

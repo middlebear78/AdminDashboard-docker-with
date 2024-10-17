@@ -16,9 +16,9 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import MailIcon from "@mui/icons-material/Mail";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import MoreIcon from "@mui/icons-material/MoreVert";
-import HomeIcon from "@mui/icons-material/Home"; // Added HomeIcon import
+import HomeIcon from "@mui/icons-material/Home";
 import DrawerList from "../Menu/DrawerList";
-import { useNavigate, Link } from "react-router-dom"; // Added Link from react-router-dom
+import { useNavigate, Link } from "react-router-dom";
 import { auth } from "../../../firebase";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../reducers/index";
@@ -154,9 +154,6 @@ function PrimarySearchAppBar() {
             open={isMenuOpen}
             onClose={handleMenuClose}
         >
-            <MenuItem onClick={handleProfileClick}>
-                <AccountCircleIcon sx={{ mr: 1, color: "grey" }} /> Profile
-            </MenuItem>
             <MenuItem onClick={handleSettingsClick}>
                 <SettingsIcon sx={{ mr: 1, color: "grey" }} /> Settings
             </MenuItem>
@@ -196,28 +193,6 @@ function PrimarySearchAppBar() {
                     </Badge>
                 </IconButton>
                 <p>Messages</p>
-            </MenuItem>
-
-            {/* <MenuItem>
-                <IconButton size="large" aria-label="show 17 new notifications" color="inherit">
-                    <Badge badgeContent={17} color="error">
-                        <NotificationsIcon />
-                    </Badge>
-                </IconButton>
-                <p>Notifications</p>
-            </MenuItem> */}
-
-            <MenuItem onClick={handleProfileMenuOpen}>
-                <IconButton
-                    size="large"
-                    aria-label="account of current user"
-                    aria-controls="primary-search-account-menu"
-                    aria-haspopup="true"
-                    color="inherit"
-                >
-                    <AccountCircle />
-                </IconButton>
-                <p>Profile</p>
             </MenuItem>
         </Menu>
     );

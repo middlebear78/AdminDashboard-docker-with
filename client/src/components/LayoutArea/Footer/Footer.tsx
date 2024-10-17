@@ -29,10 +29,10 @@ const Footer: React.FC = () => {
                             Home
                         </Link>
                         <Link href="#" variant="body2" display="block">
-                            Contact
+                            Login
                         </Link>
                         <Link href="#" variant="body2" display="block">
-                            Services
+                            Settings
                         </Link>
                     </Grid>
 
@@ -53,7 +53,7 @@ const Footer: React.FC = () => {
                     <Typography variant="body2" color="textSecondary" align="center">
                         {"Copyright © "}
                         <Link color="inherit" href="https://yourwebsite.com/">
-                            Your Website
+                            passport the world 
                         </Link>{" "}
                         {new Date().getFullYear()}.
                     </Typography>

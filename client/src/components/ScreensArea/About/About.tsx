@@ -2,6 +2,9 @@ import css from "./About.module.css";
 import { Box, Container, Typography, Grid, Card, CardContent, CardMedia } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import companyOverviewImage from "../../../Assets/images/2.jpg"; // Optional, can be used as a cover image
+import uri from "../../../Assets/images/employeesImages/uri.jpg";
+import shani from "../../../Assets/images/employeesImages/shani.jpg";
+import chris from "../../../Assets/images/employeesImages/chris.jpg";
 
 const StyledCard = styled(Card)(({ theme }) => ({
     height: "100%",
@@ -119,12 +122,7 @@ export function About(): JSX.Element {
                     {/* Employee Card 1 */}
                     <Grid item xs={12} sm={6} md={4}>
                         <StyledCard>
-                            <CardMedia
-                                component="img"
-                                height="140"
-                                image="https://via.placeholder.com/150.png?text=Employee+1"
-                                alt="Employee 1"
-                            />
+                            <CardMedia component="img" height="330" image={uri} alt="Employee 1" />
                             <CardContent>
                                 <Typography gutterBottom variant="h6" component="div">
                                     Uri Shamir
@@ -139,12 +137,7 @@ export function About(): JSX.Element {
                     {/* Employee Card 2 */}
                     <Grid item xs={12} sm={6} md={4}>
                         <StyledCard>
-                            <CardMedia
-                                component="img"
-                                height="140"
-                                image="https://via.placeholder.com/150.png?text=Employee+2"
-                                alt="Employee 2"
-                            />
+                            <CardMedia component="img" height="330" image={shani} alt="Employee 2" />
                             <CardContent>
                                 <Typography gutterBottom variant="h6" component="div">
                                     Shani Netzer
@@ -159,12 +152,7 @@ export function About(): JSX.Element {
                     {/* Employee Card 3 */}
                     <Grid item xs={12} sm={6} md={4}>
                         <StyledCard>
-                            <CardMedia
-                                component="img"
-                                height="140"
-                                image="https://via.placeholder.com/150.png?text=Employee+3"
-                                alt="Employee 3"
-                            />
+                            <CardMedia component="img" height="330" image={chris} alt="Employee 3" />
                             <CardContent>
                                 <Typography gutterBottom variant="h6" component="div">
                                     Christopher Klassen

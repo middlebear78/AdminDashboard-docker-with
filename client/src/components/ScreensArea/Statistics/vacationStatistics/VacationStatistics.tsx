@@ -1,7 +1,7 @@
-import css from "./Statistics.module.css";
-import ReusableTable from "../../Tools/ReusableTable";
-import InfoCard from "../../Tools/InfoCard";
-import { VacationsStatistics } from "../../../service/statisticsService";
+import css from "./VacationStatistics.module.css";
+import ReusableTable from "../../../Tools/ReusableTable";
+import InfoCard from "../../../Tools/InfoCard";
+import { VacationsStatistics } from "../../../../service/statisticsService";
 import { useEffect, useState } from "react";
 import { Box, Typography } from "@mui/material";
 // @ts-ignore
@@ -53,7 +53,7 @@ interface Row {
     end_date: number;
 }
 
-export function Statistics(): JSX.Element {
+export function VacationStatistics(): JSX.Element {
     const [vacationsStatistics, setVacationStatistics] = useState<VacationStatistics | null>(null);
 
     const getVacationsStatistics = async (): Promise<void> => {

@@ -1,7 +1,7 @@
-import css from "./Statistics.module.css";
-import ReusableTable from "../../Tools/ReusableTable";
-import InfoCard from "../../Tools/InfoCard";
-import { UsersStatistics } from "../../../service/statisticsService";
+import css from "./UserStatistics.module.css";
+import ReusableTable from "../../../Tools/ReusableTable";
+import InfoCard from "../../../Tools/InfoCard";
+import { UsersStatistics } from "../../../../service/statisticsService";
 import { useEffect, useState } from "react";
 import { Box, Typography } from "@mui/material";
 

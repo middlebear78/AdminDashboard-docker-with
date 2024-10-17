@@ -26,17 +26,17 @@ const Login: React.FC = () => {
         setLoading(true);
         try {
             const result = await signInWithEmailAndPassword(auth, email, password);
-            console.log(result); 
+            console.log(result);
             const user = result.user;
             const idTokenResult = await user.getIdTokenResult();
 
             const res = await createOrUpdateUser(idTokenResult.token);
             if (!res || !res.user_info) {
                 toastify.error("Failed to retrieve user information. Please try again.");
-                return; 
+                return;
             }
 
-            console.log("User Info:", res.user_info); 
+            console.log("User Info:", res.user_info);
 
             const { user_id, first_name, last_name, email: userEmail, role } = res.user_info;
 
@@ -72,12 +72,12 @@ const Login: React.FC = () => {
             const result = await signInWithPopup(auth, googleAuthProvider);
             const user = result.user;
             const idTokenResult = await user.getIdTokenResult();
-    
+
             const res = await createOrUpdateUser(idTokenResult.token);
             const { user_id, first_name, last_name, email: userEmail, role } = res.user_info;
-    
-            console.log("Fetched role from response:", role); // Check the role from response
-    
+
+            console.log("Fetched role from response:", role);
+
             const userData: User = {
                 user_id,
                 first_name,
@@ -86,16 +86,16 @@ const Login: React.FC = () => {
                 role: role === 2 ? "Admin" : "User",
                 token: idTokenResult.token,
             };
-    
+
             console.log("User data before saving to local storage:", userData); // Log userData
             dispatch({
                 type: "USER_LOGGED_IN",
                 payload: userData,
             });
-    
+
             // Store user data in local storage
             localStorage.setItem("user", JSON.stringify(userData));
-    
+
             navigate("/");
             toastify.success(`Welcome ${role === 2 ? "Admin" : "User"}, You are currently logged in.`);
         } catch (error: any) {
