@@ -1,4 +1,3 @@
-// ToastService.ts
 import { toast, ToastOptions } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -23,7 +22,5 @@ class Toast {
         toast.warn(message, options);
     }
 }
-
-
 
 export const toastify = new Toast();

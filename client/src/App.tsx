@@ -41,8 +41,7 @@ function App() {
     useEffect(() => {
         const userDataString = localStorage.getItem("user"); // Get the user data as a string
         if (userDataString) {
-            // Check if it's not null
-            const userData = JSON.parse(userDataString); // Now parse it safely
+            const userData = JSON.parse(userDataString);
             dispatch({
                 type: "USER_LOGGED_IN",
                 payload: userData,
@@ -53,7 +52,8 @@ function App() {
     return (
         <div className="App">
             <ToastContainer
-                position="top-center"
+                className="custom-toast-container"
+                position="top-right"
                 autoClose={3000}
                 hideProgressBar={false}
                 newestOnTop={false}

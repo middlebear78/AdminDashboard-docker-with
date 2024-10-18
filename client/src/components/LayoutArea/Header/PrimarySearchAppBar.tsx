@@ -154,15 +154,30 @@ function PrimarySearchAppBar() {
             open={isMenuOpen}
             onClose={handleMenuClose}
         >
-            <MenuItem onClick={handleSettingsClick}>
+            <MenuItem
+                onClick={() => {
+                    handleSettingsClick();
+                    handleMenuClose();
+                }}
+            >
                 <SettingsIcon sx={{ mr: 1, color: "grey" }} /> Settings
             </MenuItem>
             {localUser?.role === "Admin" ? (
-                <MenuItem onClick={handleLogoutClick}>
+                <MenuItem
+                    onClick={() => {
+                        handleLogoutClick();
+                        handleMenuClose();
+                    }}
+                >
                     <LoginIcon sx={{ mr: 1, color: "grey" }} /> Logout
                 </MenuItem>
             ) : (
-                <MenuItem onClick={handleLoginClick}>
+                <MenuItem
+                    onClick={() => {
+                        handleLoginClick();
+                        handleMenuClose();
+                    }}
+                >
                     <LoginIcon sx={{ mr: 1, color: "grey" }} /> Login
                 </MenuItem>
             )}
@@ -186,7 +201,7 @@ function PrimarySearchAppBar() {
             open={isMobileMenuOpen}
             onClose={handleMobileMenuClose}
         >
-            <MenuItem>
+            <MenuItem onClick={handleMobileMenuClose}>
                 <IconButton size="large" aria-label="show 4 new mails" color="inherit">
                     <Badge badgeContent={4} color="error">
                         <MailIcon />
@@ -224,7 +239,6 @@ function PrimarySearchAppBar() {
                         sx={{
                             background: "linear-gradient(90deg, rgba(50, 205, 50, 0.8), rgba(50, 205, 50, 0.5))", // Green gradient
                             WebkitBackgroundClip: "text",
-
                             fontWeight: "400",
                             fontSize: "2rem",
                             fontFamily: "'Kaushan Script', cursive",
@@ -293,7 +307,7 @@ function PrimarySearchAppBar() {
             </AppBar>
             {renderMobileMenu}
             {renderMenu}
-            <DrawerList open={drawerOpen} toggleDrawer={toggleDrawer} />
+            <DrawerList toggleDrawer={toggleDrawer} open={drawerOpen} />
         </Box>
     );
 }

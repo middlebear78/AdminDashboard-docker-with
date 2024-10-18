@@ -96,7 +96,6 @@ export function VacationStatistics(): JSX.Element {
         getVacationsStatistics();
     }, []);
 
-    // Color mapping for both charts
     const colors = {
         past_due: "red",
         ongoing: "green",

@@ -93,7 +93,6 @@ const Login: React.FC = () => {
                 payload: userData,
             });
 
-            // Store user data in local storage
             localStorage.setItem("user", JSON.stringify(userData));
 
             navigate("/");
@@ -106,48 +105,8 @@ const Login: React.FC = () => {
         }
     };
 
-    const handleFacebookLogin = async () => {
-        // setLoading(true);
-        // try {
-        //     console.log("Logging in with Facebook");
-        //     const result = await signInWithPopup(auth, facebookProvider);
-        //     const user = result.user;
-        //     const idTokenResult = await user.getIdTokenResult();
-        //     const res = await createOrUpdateUser(idTokenResult.token);
-        //     const { user_id, first_name, last_name, email: userEmail, role } = res.user_info;
-        //     dispatch({
-        //         type: "USER_LOGGED_IN",
-        //         payload: {
-        //             user_id,
-        //             first_name,
-        //             last_name,
-        //             email: userEmail,
-        //             role: role === 2 ? "Admin" : "User",
-        //             token: idTokenResult.token,
-        //         },
-        //     });
-        //     navigate("/");
-        //     toastify.success("Welcome Admin, You are currently logged in with Facebook.");
-        // } catch (error: any) {
-        //     console.log(error);
-        //     toastify.error(error.message || "An error has occurred while trying to log in with Facebook.");
-        // } finally {
-        //     setLoading(false);
-        // }
-    };
-
     return (
-        <>
-            {loading ? (
-                <h2>Loading...</h2>
-            ) : (
-                <LoginForm
-                    onSubmit={handleLogin}
-                    onGoogleLogin={handleGoogleLogin}
-                    onFacebookLogin={handleFacebookLogin}
-                />
-            )}
-        </>
+        <>{loading ? <h2>Loading...</h2> : <LoginForm onSubmit={handleLogin} onGoogleLogin={handleGoogleLogin} />}</>
     );
 };
 

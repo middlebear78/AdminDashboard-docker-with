@@ -7,10 +7,9 @@ import { Link } from "react-router-dom";
 interface LoginFormProps {
     onSubmit: (email: string, password: string) => void;
     onGoogleLogin: () => void;
-    onFacebookLogin: () => void;
 }
 
-const LoginForm: React.FC<LoginFormProps> = ({ onSubmit, onGoogleLogin, onFacebookLogin }) => {
+const LoginForm: React.FC<LoginFormProps> = ({ onSubmit, onGoogleLogin }) => {
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
 
@@ -108,25 +107,6 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit, onGoogleLogin, onFacebo
                     >
                         <Typography variant="body1" sx={{ flexGrow: 1, textAlign: "center" }}>
                             Sign In With Google
-                        </Typography>
-                    </Button>
-
-                    <Button
-                        type="button"
-                        variant="contained"
-                        color="primary"
-                        sx={{
-                            borderRadius: "20px",
-                            "&:hover": { backgroundColor: "darkred" },
-                            width: "250px",
-                            display: "flex",
-                            alignItems: "center",
-                        }}
-                        startIcon={<FacebookIcon />}
-                        onClick={onFacebookLogin}
-                    >
-                        <Typography variant="body1" sx={{ flexGrow: 1, textAlign: "center" }}>
-                            Sign In With Facebook
                         </Typography>
                     </Button>
                 </Box>
