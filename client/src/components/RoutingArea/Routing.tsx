@@ -11,6 +11,7 @@ import { LikeStatistics } from "../ScreensArea/Statistics/likeStatistics/LikeSta
 import { UserStatistics } from "../ScreensArea/Statistics/usersStatistics/UserStatistics";
 import NotFound from "../ScreensArea/ErrorsScreen/404NotfoundScreen";
 import { useAuth } from "../../context/AuthContext";
+import ForgotPassword from "../AuthArea/forgotpassword/ForgotPassword";
 
 const Routing: React.FC = () => {
     const { isAuthenticated } = useAuth();
@@ -20,13 +21,14 @@ const Routing: React.FC = () => {
             <Routes>
                 <Route path="/" element={<HomeScreen />} />
                 <Route path="/login" element={isAuthenticated ? <HomeScreen /> : <Login />} />
+                <Route path="/forgot/password" element={<ForgotPassword />} />
+                <Route path="/about" element={<About />} />
 
                 {/* Protected  with admin private route */}
                 <Route path="/statistics" element={<AdminPrivateRoute element={<VacationStatistics />} />} />
                 <Route path="/likes" element={<AdminPrivateRoute element={<LikeStatistics />} />} />
                 <Route path="/users" element={<AdminPrivateRoute element={<UserStatistics />} />} />
                 <Route path="/settings" element={<AdminPrivateRoute element={<Settings />} />} />
-                <Route path="/about" element={<About />} />
 
                 {/* {/* 404 NotFound  /} */}
                 <Route path="*" element={<NotFound />} />
