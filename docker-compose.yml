@@ -1,0 +1,100 @@
+# All containers needed: 
+services: 
+
+  # MySQL service: 
+  database-service:
+
+    # Image name to create from Dockerfile:
+    image: asaf/northwind-database-image:1.0
+
+    # Where is the location of the Dockerfile:
+    build: ./database
+
+    # Container name to create: 
+    container_name: admin-dashboard-database-container
+
+    # Named-vo~lume for MySQL folder:
+    volumes:
+      - northwind-volume:/var/lib/mysql
+
+    # Environment variables needed by MySQL for creating the database:
+    environment:
+      MYSQL_HOST: localhost # Where is the database host we're building --> Internally inside the container.
+      MYSQL_USER: Alice # Inventing a database user.
+      MYSQL_PASSWORD: Wonderland # Inventing a database password.
+      MYSQL_DATABASE: northwind # What is the database name.
+      MYSQL_ROOT_PASSWORD: Wonderland # Additional passwrod needed internaly by MySQL
+      # MYSQL_PORT: 3307
+
+    # What to do if the container crashes: 
+    restart: unless-stopped # Restart when crashes, unless we stopped it.
+
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 5s
+      retries: 160
+
+# ------------------------------------------------------------------------------------------
+
+  # Django service (application): 
+  django-service:
+
+    # On which service we're depending on - for running and shutting-down order:
+    depends_on:
+      database-service:
+        condition: service_healthy
+
+    # Image name to create from Dockerfile:
+    image: urisham/admin-dashboard-django-image:1.0
+
+    # Where is the location of the Dockerfile:
+    build: ./server
+
+    # Container name to create: 
+    container_name: admin-dashboard-django-container
+
+    # Environment variables needed by our backend project for connecting to MySQL located in another container!
+    environment:
+      MYSQL_HOST: database-service # Where is the database host we're connecting to relative to docker network. the service name is the computer name on the network.
+      MYSQL_USER: Alice # Inventing a database user.
+      MYSQL_PASSWORD: Wonderland # Inventing a database password.
+      MYSQL_DATABASE: northwind # What is the database name.
+      # MYSQL_PORT: 3307
+
+    # What to do if the container crashes: 
+    restart: unless-stopped # Restart when crashes, unless we stopped it.
+
+    # Port mapping (host:container)
+    ports:
+      - 8000:8000
+
+# ------------------------------------------------------------------------------------------
+
+  # React service:
+  react-service: 
+
+    # On which service we're depending on - for running and shutting-down order:
+    depends_on:
+      - django-service
+
+    # Image name to create from Dockerfile:
+    image: urisham/admin-dashboard-react-image:1.0
+
+    # Where is the location of the Dockerfile:
+    build: ./React
+
+    # Container name to create: 
+    container_name: admin-dashboard-react-container
+
+    # What to do if the container crashes: 
+    restart: unless-stopped # Restart when crashes, unless we stopped it.
+
+    # Port mapping (host:container)
+    ports:
+      - 80:3000
+
+# ------------------------------------------------------------------------------------------
+
+# List all the named-volumes: 
+volumes:
+  admin-dashboard-volume:

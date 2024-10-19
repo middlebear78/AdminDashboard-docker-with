@@ -50,7 +50,9 @@ const DrawerList: React.FC<DrawerListProps> = ({ open, toggleDrawer }) => {
     const handleLogout = () => {
         auth.signOut()
             .then(() => {
+                localStorage.removeItem("user");
                 dispatch({ type: "LOGOUT", payload: null });
+
                 toastify.info("You are now logged out.");
                 navigate("/");
             })
