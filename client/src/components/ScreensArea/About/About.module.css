@@ -2,10 +2,11 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 1200px;
-
+    width: 100%;
+    max-width: 1200px;
     flex-direction: column;
     margin: 0 auto;
+    padding: 0 16px;
 }
 
 .innerContainer {
