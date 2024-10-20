@@ -113,7 +113,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onSubmit, onGoogleLogin }) => {
 
                 <Typography variant="body2" align="center" sx={{ mt: 2 }}>
                     Forgot Password?{" "}
-                    <Link to="/register" style={{ textDecoration: "none" }}>
+                    <Link to="/forgot/password" style={{ textDecoration: "none" }}>
                         <Typography variant="body2" color="primary" component="span">
                             Click Here
                         </Typography>

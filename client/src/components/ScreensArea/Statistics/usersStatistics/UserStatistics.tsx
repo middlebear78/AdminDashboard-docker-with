@@ -63,6 +63,23 @@ export function UserStatistics(): JSX.Element {
         }));
     };
 
+    const getRoleStatistics = (users: any[]) => {
+        let adminCount = 0;
+        let userCount = 0;
+
+        users.forEach((user) => {
+            if (user.role.role_name === "Admin") {
+                adminCount++;
+            } else if (user.role.role_name === "User") {
+                userCount++;
+            }
+        });
+
+        return { adminCount, userCount };
+    };
+
+    const roleStats = userStatistics ? getRoleStatistics(userStatistics.users) : { adminCount: 0, userCount: 0 };
+
     useEffect(() => {
         getUsersStatistics();
     }, []);
@@ -86,29 +103,19 @@ export function UserStatistics(): JSX.Element {
                         rows={userStatistics ? getRowsFromUsers(userStatistics.users) : []}
                     />
                 </div>
-            </div>
-            <div className={css.chartsStatistics}>
+
                 <div className={css.chartsContainer}>
                     <PieChart
                         series={[
                             {
                                 data: [
-                                    { id: 0, value: 10, label: "series A" },
-                                    { id: 1, value: 15, label: "series B" },
-                                    { id: 2, value: 20, label: "series C" },
+                                    { id: 0, value: roleStats.adminCount, label: "Admins" },
+                                    { id: 1, value: roleStats.userCount, label: "Users" },
                                 ],
                             },
                         ]}
                         width={400}
                         height={200}
-                    />
-                </div>
-                <div className={css.chartsContainer}>
-                    <BarChart
-                        xAxis={[{ scaleType: "band", data: ["group A", "group B", "group C"] }]}
-                        series={[{ data: [4, 3, 5] }, { data: [1, 6, 3] }, { data: [2, 5, 6] }]}
-                        width={500}
-                        height={300}
                     />
                 </div>
             </div>

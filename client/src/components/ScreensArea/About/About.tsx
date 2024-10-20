@@ -119,7 +119,7 @@ export function About(): JSX.Element {
                     Employee Information
                 </Typography>
                 <Grid container spacing={4}>
-                    {/* Employee Card 1 */}
+                    
                     <Grid item xs={12} sm={6} md={4}>
                         <StyledCard>
                             <CardMedia component="img" height="330" image={uri} alt="Employee 1" />
@@ -134,7 +134,7 @@ export function About(): JSX.Element {
                         </StyledCard>
                     </Grid>
 
-                    {/* Employee Card 2 */}
+                    
                     <Grid item xs={12} sm={6} md={4}>
                         <StyledCard>
                             <CardMedia component="img" height="330" image={shani} alt="Employee 2" />

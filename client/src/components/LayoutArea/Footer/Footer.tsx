@@ -19,7 +19,8 @@ const Footer: React.FC = () => {
                     <Grid item xs={12} sm={4}>
                         <Typography variant="h6">About Us</Typography>
                         <Typography variant="body2">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                            1234 Vacation Lane, Suite 567, Gedera, israel Phone: (123) 456-7890
+                            Email: contact@passportTw.com
                         </Typography>
                     </Grid>
 
@@ -52,8 +53,8 @@ const Footer: React.FC = () => {
                 <Box mt={2}>
                     <Typography variant="body2" color="textSecondary" align="center">
                         {"Copyright © "}
-                        <Link color="inherit" href="https://yourwebsite.com/">
-                            passport the world 
+                        <Link color="inherit" href="https://passportTw.com/">
+                            passport the world
                         </Link>{" "}
                         {new Date().getFullYear()}.
                     </Typography>

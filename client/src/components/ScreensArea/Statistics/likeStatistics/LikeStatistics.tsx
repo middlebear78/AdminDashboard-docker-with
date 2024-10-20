@@ -13,7 +13,7 @@ interface LikeStatistic {
 }
 
 interface LikeStatistics {
-    likes_by_country: LikeStatistic[]; // Ensure this matches your API structure
+    likes_by_country: LikeStatistic[];
 }
 
 interface Column {
@@ -42,8 +42,8 @@ export function LikeStatistics(): JSX.Element {
     const getLikesStatistics = async (): Promise<void> => {
         try {
             const response = await LikesStatistics();
-            console.log(response.data); // Verify the structure of the response
-            setLikesStatistics(response.data); // Ensure this has the correct structure
+            console.log(response.data);
+            setLikesStatistics(response.data);
             setLoading(false);
         } catch (err) {
             console.log("Error fetching Statistics", err);
@@ -53,7 +53,7 @@ export function LikeStatistics(): JSX.Element {
     };
 
     const getRowsFromLikes = (items: LikeStatistic[] | undefined): Row[] => {
-        if (!items) return []; // Return an empty array if items is undefined
+        if (!items) return [];
         return items.map((item) => ({
             country: item.country,
             likes: item.likes,
@@ -73,7 +73,6 @@ export function LikeStatistics(): JSX.Element {
         }, {} as { [key: string]: number });
     };
 
-    // Transform likePercentages into an array for the BarChart
     const getBarChartData = (): { country: string; percentage: number }[] => {
         return Object.entries(calculateLikesPercentages()).map(([country, percentage]) => ({
             country,
@@ -85,13 +84,12 @@ export function LikeStatistics(): JSX.Element {
         getLikesStatistics();
     }, []);
 
-    // Handle loading and error states
     if (loading) {
-        return <div>Loading...</div>; // Show loading state
+        return <div>Loading...</div>;
     }
 
     if (error) {
-        return <div>Error fetching statistics.</div>; // Show error state
+        return <div>Error fetching statistics.</div>;
     }
 
     const barChartData = getBarChartData();
@@ -109,48 +107,30 @@ export function LikeStatistics(): JSX.Element {
                     <InfoCard head="Total Likes for Each Country:" body="" />
                     <ReusableTable columns={columns} rows={getRowsFromLikes(likesStatistics?.likes_by_country)} />
                 </div>
-                <div className={css.likechartsStatistics}>
-                    <div className={css.likechartsContainer}>
-                        <PieChart
-                            series={[
-                                {
-                                    data: Object.entries(calculateLikesPercentages()).map(
-                                        ([country, percentage], index) => ({
-                                            id: index,
-                                            value: percentage,
-                                            label: country,
-                                        })
-                                    ),
-                                },
-                            ]}
-                            width={600}
-                            height={200}
-                        />
-                    </div>
-                    <div className={css.chartsContainer}>
-                        <ResponsiveContainer width="200%" height={300}>
-                            <BarChart
-                                data={barChartData}
-                                margin={{
-                                    top: 20,
-                                    right: 30,
-                                    left: 20,
-                                    bottom: 5,
-                                }}
-                            >
-                                <CartesianGrid strokeDasharray="3 3" />
-                                <XAxis dataKey="country" />
-                                <YAxis />
-                                <Tooltip />
-                                <Legend />
-                                <Bar dataKey="percentage" barSize={40}>
-                                    {barChartData.map((entry, index) => (
-                                        <Cell key={`cell-${index}`} fill="#82ca9d" />
-                                    ))}
-                                </Bar>
-                            </BarChart>
-                        </ResponsiveContainer>
-                    </div>
+
+                <div className={css.likechartsContainer}>
+                    <ResponsiveContainer width="100%" height={300}>
+                        <BarChart
+                            data={barChartData}
+                            margin={{
+                                top: 20,
+                                right: 30,
+                                left: 20,
+                                bottom: 5,
+                            }}
+                        >
+                            <CartesianGrid strokeDasharray="3 3" />
+                            <XAxis dataKey="country" />
+                            <YAxis />
+                            <Tooltip />
+                            <Legend />
+                            <Bar dataKey="percentage" barSize={40}>
+                                {barChartData.map((entry, index) => (
+                                    <Cell key={`cell-${index}`} fill="#82ca9d" />
+                                ))}
+                            </Bar>
+                        </BarChart>
+                    </ResponsiveContainer>
                 </div>
             </div>
         </>

@@ -1,7 +1,7 @@
 .Statistics {
     padding-top: 20px;
     display: flex;
-    flex-direction: row; /* Ensures each section stacks vertically */
+    flex-direction: column; /* Ensures each section stacks vertically */
     /* align-items: center; Center aligns the sections */
 }
 
@@ -24,31 +24,21 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    /* border: 1px solid white;
-    border-radius: 5px;
-    padding: 50px;
-    margin: 50px;
-    box-shadow: 1px 1px 3px gray; */
 }
 .likechartsStatistics {
+}
+
+.likechartsContainer {
     padding-top: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     margin-right: 50px;
-}
-
-.likechartsContainer {
-    width: 100%;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
     border: 1px solid white;
     border-radius: 5px;
-    padding: 50px;
+    padding: 10px;
     margin: 50px;
     box-shadow: 1px 1px 3px gray;
+    margin-bottom: 100px;
 }
