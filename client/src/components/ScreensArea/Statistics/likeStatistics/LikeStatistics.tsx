@@ -4,7 +4,6 @@ import InfoCard from "../../../Tools/InfoCard";
 import { LikesStatistics } from "../../../../service/statisticsService";
 import { useEffect, useState } from "react";
 import { Box, Typography } from "@mui/material";
-import { PieChart } from "@mui/x-charts/PieChart";
 import { Cell, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
 
 interface LikeStatistic {
@@ -25,12 +24,12 @@ interface Column {
 }
 
 const columns: Column[] = [
-    { id: "country", label: "Country", minWidth: 0 },
+    { id: "destination", label: "Destination", minWidth: 0 },
     { id: "likes", label: "Likes", minWidth: 0 },
 ];
 
 interface Row {
-    country: string;
+    destination: string;
     likes: number;
 }
 
@@ -55,7 +54,7 @@ export function LikeStatistics(): JSX.Element {
     const getRowsFromLikes = (items: LikeStatistic[] | undefined): Row[] => {
         if (!items) return [];
         return items.map((item) => ({
-            country: item.country,
+            destination: item.country,
             likes: item.likes,
         }));
     };
@@ -93,6 +92,7 @@ export function LikeStatistics(): JSX.Element {
     }
 
     const barChartData = getBarChartData();
+    const totalLikes = likesStatistics?.likes_by_country.reduce((sum, item) => sum + item.likes, 0) || 0;
 
     return (
         <>
@@ -103,9 +103,14 @@ export function LikeStatistics(): JSX.Element {
             </Box>
 
             <div className={css.Statistics}>
-                <div className={css.tableContainer}>
-                    <InfoCard head="Total Likes for Each Country:" body="" />
-                    <ReusableTable columns={columns} rows={getRowsFromLikes(likesStatistics?.likes_by_country)} />
+                <div className={css.topContainer}>
+                    <div className={css.tableContainer}>
+                        <InfoCard head="Total Likes for all Vacations:" body={totalLikes.toString()} />
+                    </div>
+                    <div className={css.tableContainer}>
+                        <InfoCard head="Total Likes for Each Destination:" body="" />
+                        <ReusableTable columns={columns} rows={getRowsFromLikes(likesStatistics?.likes_by_country)} />
+                    </div>
                 </div>
 
                 <div className={css.likechartsContainer}>
