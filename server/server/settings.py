@@ -96,7 +96,8 @@ DATABASES = {
         "NAME": "project",
         "USER": "root",
         "PASSWORD": "123456",
-        "HOST": "localhost",
+        "HOST": "localhost", 
+        # "HOST": "database-service",  #for the docker
         "PORT": "3306",
     }
 }
@@ -148,6 +149,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
+    "http://localhost:80",
 ]
 CORS_ALLOW_HEADERS = list(default_headers) + [
     'token',
