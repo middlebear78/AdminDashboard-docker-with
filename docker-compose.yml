@@ -1,0 +1,97 @@
+version: '3.8'  # Make sure to specify the version for clarity
+
+services:
+    # MySQL service:
+    database-service:
+        # Image name to create from Dockerfile:
+        image: urishamir/project-database-image:1.0
+
+        # Where is the location of the Dockerfile:
+        build: ./database
+
+        # Container name to create:
+        container_name: admin-dashboard-database-container
+
+        # Named-volume for MySQL folder:
+        volumes:
+            - project-volume:/var/lib/mysql
+
+        # Environment variables needed by MySQL for creating the database:
+        environment:
+            MYSQL_DATABASE: project  # What is the database name.
+            MYSQL_ROOT_PASSWORD: 123456  # Additional password needed internally by MySQL.
+
+        # What to do if the container crashes:
+        restart: unless-stopped  # Restart when crashes, unless we stopped it.
+
+        healthcheck:
+            test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+            timeout: 5s
+            retries: 160
+
+    # ------------------------------------------------------------------------------------------
+
+    # Django service (application):
+    django-service:
+        # On which service we're depending on - for running and shutting-down order:
+        depends_on:
+            database-service:
+                condition: service_healthy
+
+        # Image name to create from Dockerfile:
+        image: urishamir/admin-dashboard-django-image:1.0
+
+        # Where is the location of the Dockerfile:
+        build: ./server
+
+        # Container name to create:
+        container_name: admin-dashboard-django-container
+
+        # Environment variables needed by our backend project for connecting to MySQL located in another container!
+        environment:
+            MYSQL_HOST: database-service  # Service name is the computer name on the network.
+            MYSQL_USER: root  # Inventing a database user.
+            MYSQL_PASSWORD: 123456  # Inventing a database password.
+            MYSQL_DATABASE: project  # What is the database name.
+            FIREBASE_CONFIG: /app/config/fbServiceAccountKey.json
+
+        # What to do if the container crashes:
+        restart: unless-stopped  # Restart when crashes, unless we stopped it.
+
+        # Port mapping (host:container)
+        ports:
+            - 8000:8000
+
+        volumes:
+            - ./server/config:/app/config
+
+    # ------------------------------------------------------------------------------------------
+
+    # React service:
+    react-service:
+        # On which service we're depending on - for running and shutting-down order:
+        depends_on:
+            - django-service
+
+        # Image name to create from Dockerfile:
+        image: urishamir/admin-dashboard-react-image:1.0
+
+        # Where is the location of the Dockerfile:
+        build: ./client
+
+        # Container name to create:
+        container_name: admin-dashboard-react-container
+
+        # What to do if the container crashes:
+        restart: unless-stopped  # Restart when crashes, unless we stopped it.
+
+        # Port mapping (host:container)
+        ports:
+            - 80:3000
+
+# ------------------------------------------------------------------------------------------
+
+# List all the named-volumes:
+volumes:
+    project-volume:
+    admin-dashboard-volume:
