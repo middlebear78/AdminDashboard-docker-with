@@ -1,7 +1,7 @@
 import * as React from "react";
 import { styled, alpha } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
@@ -11,10 +11,10 @@ import Badge from "@mui/material/Badge";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
-import SearchIcon from "@mui/icons-material/Search";
+
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import MailIcon from "@mui/icons-material/Mail";
-import NotificationsIcon from "@mui/icons-material/Notifications";
+
 import MoreIcon from "@mui/icons-material/MoreVert";
 import HomeIcon from "@mui/icons-material/Home";
 import DrawerList from "../Menu/DrawerList";
@@ -22,45 +22,11 @@ import { useNavigate, Link } from "react-router-dom";
 import { auth } from "../../../firebase";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../reducers/index";
-import { capitalizeFirstLetter } from "../../../utils/tools";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+
 import SettingsIcon from "@mui/icons-material/Settings";
 import LoginIcon from "@mui/icons-material/Login";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { toastify } from "../../../utils/toastify";
-
-const SearchIconWrapper = styled("div")(({ theme }) => ({
-    padding: theme.spacing(0, 2),
-    height: "100%",
-    position: "absolute",
-    pointerEvents: "none",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-}));
-
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-    color: "inherit",
-    "& .MuiInputBase-input": {
-        padding: theme.spacing(1, 1, 1, 0),
-        paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-    },
-}));
-
-const Search = styled("div")(({ theme }) => ({
-    position: "relative",
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: alpha(theme.palette.common.white, 0.15),
-    "&:hover": {
-        backgroundColor: alpha(theme.palette.common.white, 0.25),
-    },
-    marginLeft: 0,
-    width: "100%",
-    [theme.breakpoints.up("md")]: {
-        marginLeft: theme.spacing(1),
-        width: "auto",
-    },
-}));
 
 function PrimarySearchAppBar() {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -105,10 +71,6 @@ function PrimarySearchAppBar() {
     };
 
     const menuId = "primary-search-account-menu";
-
-    const handleProfileClick = () => {
-        navigate("/profile");
-    };
 
     const handleSettingsClick = () => {
         navigate("/settings");
@@ -169,7 +131,7 @@ function PrimarySearchAppBar() {
                         handleMenuClose();
                     }}
                 >
-                    <LoginIcon sx={{ mr: 1, color: "grey" }} /> Logout
+                    <LogoutIcon sx={{ mr: 1, color: "grey" }} /> Logout
                 </MenuItem>
             ) : (
                 <MenuItem

@@ -1,11 +1,8 @@
-import css from "./UserStatistics.module.css";
 import ReusableTable from "../../../Tools/ReusableTable";
 import InfoCard from "../../../Tools/InfoCard";
 import { UsersStatistics } from "../../../../service/statisticsService";
 import { useEffect, useState } from "react";
 import { Box, Typography } from "@mui/material";
-
-import { BarChart } from "@mui/x-charts/BarChart";
 import { PieChart } from "@mui/x-charts/PieChart";
 
 interface UserStatistics {
@@ -26,7 +23,7 @@ const columns: Column[] = [
     { id: "last_name", label: "Last Name", minWidth: 0 },
     {
         id: "email",
-        label: "email",
+        label: "Email",
     },
     {
         id: "role_name",
@@ -48,7 +45,6 @@ export function UserStatistics(): JSX.Element {
         try {
             const response = await UsersStatistics();
             setUserStatistics(response.data);
-            console.log(userStatistics);
         } catch (err) {
             console.log("Error fetching Statistics", err);
         }
@@ -92,8 +88,23 @@ export function UserStatistics(): JSX.Element {
                 <Box sx={{ flexGrow: 1, height: "1px", bgcolor: "gray" }} />
             </Box>
 
-            <div className={css.Statistics}>
-                <div className={css.tableContainer}>
+            <Box
+                sx={{
+                    display: "flex",
+                    flexDirection: { xs: "column", md: "row" },
+                    justifyContent: "space-between",
+                    alignItems: "flex-start",
+                    gap: 3, 
+                    width: "100%",
+                }}
+            >
+                {/* Table Container */}
+                <Box
+                    sx={{
+                        flex: 1,
+                        minWidth: "300px", 
+                    }}
+                >
                     <InfoCard
                         head="Number Of Active Users:"
                         body={userStatistics ? userStatistics.count.toString() : "Loading..."}
@@ -102,9 +113,18 @@ export function UserStatistics(): JSX.Element {
                         columns={columns}
                         rows={userStatistics ? getRowsFromUsers(userStatistics.users) : []}
                     />
-                </div>
+                </Box>
 
-                <div className={css.chartsContainer}>
+                {/* Charts Container */}
+                <Box
+                    sx={{
+                        flex: 1, 
+                        display: "flex",
+                        justifyContent: "center", 
+                        alignItems: "center",
+                        minWidth: "300px", 
+                    }}
+                >
                     <PieChart
                         series={[
                             {
@@ -117,8 +137,8 @@ export function UserStatistics(): JSX.Element {
                         width={400}
                         height={200}
                     />
-                </div>
-            </div>
+                </Box>
+            </Box>
         </>
     );
 }

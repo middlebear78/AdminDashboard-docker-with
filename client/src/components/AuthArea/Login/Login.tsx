@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { signInWithEmailAndPassword, signInWithPopup, FacebookAuthProvider } from "firebase/auth";
+import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { auth, googleAuthProvider } from "../../../firebase";
 import createOrUpdateUser from "../../../service/authService";
 import LoginForm from "../../Forms/LoginForm";
@@ -15,7 +15,7 @@ const Login: React.FC = () => {
     const [password, setPassword] = useState<string>("");
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const facebookProvider = new FacebookAuthProvider();
+
     const user = useSelector((state: RootState) => state.user);
 
     // useEffect(() => {

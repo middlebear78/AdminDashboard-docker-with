@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Box, TextField, Button, Typography, Container } from "@mui/material";
 import GoogleIcon from "@mui/icons-material/Google";
-import FacebookIcon from "@mui/icons-material/Facebook";
 import { Link } from "react-router-dom";
 
 interface LoginFormProps {

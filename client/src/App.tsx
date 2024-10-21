@@ -4,12 +4,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Layout } from "./components/LayoutArea/Layout/Layout";
 import { auth } from "./firebase";
-import { useDispatch, useSelector } from "react-redux";
-import { ThemeProvider, CssBaseline } from "@mui/material";
-import { createTheme } from "@mui/material/styles";
-import { Settings } from "./components/ScreensArea/Settings/Settings";
-import { toggleTheme } from "./reducers/themeSlice";
-import { RootState } from "./store";
+import { useDispatch } from "react-redux";
 
 function App() {
     const dispatch = useDispatch();
@@ -39,7 +34,7 @@ function App() {
     }, [dispatch]);
 
     useEffect(() => {
-        const userDataString = localStorage.getItem("user"); // Get the user data as a string
+        const userDataString = localStorage.getItem("user");
         if (userDataString) {
             const userData = JSON.parse(userDataString);
             dispatch({

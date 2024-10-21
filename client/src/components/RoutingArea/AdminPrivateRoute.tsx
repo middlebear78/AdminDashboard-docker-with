@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 import LoadingToRedirect from "../RoutingArea/LoadingRedirect";
 import { currentAdmin } from "../../service/authService";
@@ -12,7 +11,7 @@ interface AdminPrivateRouteProps {
 const AdminPrivateRoute: React.FC<AdminPrivateRouteProps> = ({ element }) => {
     const { user } = useSelector((state: RootState) => state); // Assuming your user state is defined in RootState
     const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
-    const location = useLocation();
+    
 
     useEffect(() => {
         const userDataString = localStorage.getItem("user"); // Get user data from local storage

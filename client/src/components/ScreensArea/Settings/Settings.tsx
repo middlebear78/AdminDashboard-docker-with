@@ -3,17 +3,15 @@ import { Card, CardContent, Button, Typography, Stack, Box } from "@mui/material
 import { useSelector } from "react-redux";
 import { RootState } from "../../../store"; // Adjust the import path as necessary
 import css from "./Settings.module.css";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import EmailIcon from "@mui/icons-material/Email";
 import PersonIcon from "@mui/icons-material/Person";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export function Settings(): JSX.Element {
     const userInfo = useSelector((state: RootState) => state.user); // Get user info from Redux
     const navigate = useNavigate();
 
     const handleResetPassword = () => {
-       
         console.log("Password reset triggered.");
         navigate("/forgot/password");
     };

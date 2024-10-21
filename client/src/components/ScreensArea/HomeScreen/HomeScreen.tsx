@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, Container, Typography, Grid, Card, CardContent, CardMedia } from "@mui/material";
-import { styled, Theme } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import companyOverviewImage from "../../../Assets/images/2.jpg";
 import companyOverviewImage2 from "../../../Assets/images/10.jpg";
 import companyOverviewImage3 from "../../../Assets/images/11.jpg";
@@ -13,7 +13,7 @@ const StyledCard = styled(Card)(({ theme }) => ({
     transition: "transform 0.3s, box-shadow 0.3s",
     "&:hover": {
         transform: "scale(1.05)", // Scale up on hover
-        boxShadow: theme.shadows[10], // Add shadow effect
+        boxShadow: theme.shadows[10], 
     },
 }));
 
@@ -78,7 +78,7 @@ const HomeScreen: React.FC = () => {
                         <CardMedia
                             component="img"
                             height="140"
-                            image={companyOverviewImage3} // Replace with actual image for the card
+                            image={companyOverviewImage3} 
                             alt="Employee Management"
                         />
                         <CardContent>
